@@ -2,6 +2,7 @@
 export default {
    data() {
       return {
+        currentPanel: "Passwords",
         panels: [
             {name: "Passwords", imgSrc: "../../src/assets/icons/password.png"},
             {name: "Notes", imgSrc: "../../src/assets/icons/document.png"},
@@ -16,14 +17,15 @@ export default {
    
    },
    watch: {
-   
+    
    },
    mount: {
    
    },
    methods: {
     selectPanel(panel){
-        alert(panel.name);
+        this.$emit('currentPanel', panel.name);
+        this.currentPanel = panel.name;
     }
    }
 }
@@ -37,19 +39,19 @@ export default {
         </div>
     
         <div id="drawerPanels">
-            <div v-for="panel in this.panels" class="panels" v-on:click="selectPanel(panel)">
+            <div v-for="panel in this.panels" class="panels" :class="{selected: panel.name == this.currentPanel}" v-on:click="selectPanel(panel)">
                 <img :src="panel.imgSrc">
-                <p class="panelText">{{panel.name}}</p>
+                <p class="panelText unselectable">{{panel.name}}</p>
             </div>
         </div>
 
         <div class="spacerLine"></div>
 
         <div id="drawerFolder">
-            <div id="folderHeader"> 
+            <div id="folderHeader" class="unselectable"> 
                 <p>Folder</p>
             </div>
-            <div class="folderElement" v-for="folder in this.folders">
+            <div class="folderElement unselectable" v-for="folder in this.folders">
                 <p>{{folder}}</p>
             </div>
         </div>
@@ -167,5 +169,9 @@ export default {
 
     #navfooterContainer img:hover{
         cursor: pointer;
+    }
+
+    .selected{
+        background-color: hsla(0, 0%, 100%, 0.24);
     }
 </style>

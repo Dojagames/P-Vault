@@ -7,7 +7,8 @@ export default {
   data() {
     return {
       loginStatus: false,
-      window: "login",
+      window: "main",
+      drawerPanel: "Passwords",
     }
   },
   components: {
@@ -29,19 +30,35 @@ export default {
 </script>
 
 <template>
+
   <div v-if="window === 'login'" id="loginContainer" class="mainContainer">
     <Login @response="(status) => loginStatus = status"></Login>
   </div>
+
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
-    <drawer></drawer>
-    <mainlist></mainlist>
+    <drawer @currentPanel="(curPanel) => drawerPanel = curPanel"></drawer>
+    <mainlist :curPanel=drawerPanel></mainlist>
   </div>
 
+  <div id="addContainer" v-if="window === 'add'" class="mainContainer">
 
-  <div style=" position: absolute; bottom: 0px; left: 10px;">
+  </div>
+
+  <div id="editContainer" v-if="window === 'edit'" class="mainContainer">
+
+  </div>
+
+  <div id="viewContainer" v-if="window === 'view'" class="mainContainer">
+
+  </div>
+
+  <div id="settingsContainer" v-if="window === 'view'" class="mainContainer">
+
+  </div>
+
+  <div style=" position: absolute; bottom: 0px; left: 10px;" class="unselectable">
     <p>©P-Vault 2023</p>
   </div>
-
 
 </template>
 

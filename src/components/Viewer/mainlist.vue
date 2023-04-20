@@ -2,27 +2,29 @@
 export default {
     data() {
         return {
-            title: "Passwords",
             pwList: [
-                {name: "testname", username: "testuser", pw: "testPw", web: "https://google.com", folder: "none"},
-                {name: "testname", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none"},
-                {name: "testname", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none"},
+                {name: "testname", username: "testuser", pw: "testPw", web: "https://google.com", folder: "none", type: "password"},
+                {name: "testname2", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none", type: "password"},
+                {name: "testname3", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none", type: "password"},
             ],
 
             noteList: [
-                {name: "testname", note: "testnote", folder: "none"}
+                {name: "testname", note: "testnote", folder: "none", type: "note"}
             ],
 
             contactList: [
-                {name: "testname", email: "testuser", number: "testPw", bday: "testwebsite.org", address: "none", city: "none"}
+                {name: "testname", email: "testuser", number: "testPw", bday: "testwebsite.org", address: "none", city: "none", type: "contact"}
             ]
         }
+    },
+    props: {
+        curPanel: String,
     },
     components: {
         
     },
     watch: {
-        
+       
     },
     mount: {
         
@@ -43,15 +45,18 @@ export default {
         DeleteElement(e) {
             const response = confirm("do you want to delete: " + e.name);
             if(response){
-                if(this.title === "Passwords") {
+                if(e.type === "password") {
                     this.pwList = this.pwList.filter((t) => t !== e)
-                } else if (this.title === "Notes") {
+                } else if (e.type === "note") {
                     this.noteList = this.noteList.filter((t) => t !== e)
-                } else if (this.title === "Contacts") {
+                } else if (e.type === "contact") {
                     this.contactList = this.contactList.filter((t) => t !== e)
                 }
             }
             
+        },
+        LaunchElement(e){
+            //alert(e.name);
         }
     }
 }
@@ -61,20 +66,38 @@ export default {
     <div id="mainListContainer">
 
         <div id="mainHeader">
-            <h2>Passwords</h2>
+            <h2 class="unselectable">{{curPanel}}</h2>
             <button>Add Item</button>
         </div>
 
         <div id="listContainer">
-            <div v-if="this.title == Notes" v-for="note in this.noteList" class="listElement" >
-                
+            <div v-if="this.curPanel == 'Notes'" v-for="note in this.noteList" class="listElement"  @click="LaunchElement(note)">
+
+                <img src="../../assets/icons/test.png">
+                <div class="textTitle">
+                    <h4>{{note.name}}</h4>
+                </div>
+                <div class="listNavbar">
+                    <img src="../../assets/icons/edit.png" @click="EditElement(note)">
+                    <img src="../../assets/icons/delete.png" @click="DeleteElement(note)">
+                </div>
+
             </div>
 
-            <div v-else-if="this.title == Contacts" v-for="contact in this.contactList" class="listElement" >
+            <div v-else-if="this.curPanel == 'Contacts'" v-for="contact in this.contactList" class="listElement" @click="LaunchElement(contact)">
+
+                <img src="../../assets/icons/test.png">
+                <div class="textTitle">
+                    <h4>{{contact.name}}</h4>
+                </div>
+                <div class="listNavbar">  
+                    <img src="../../assets/icons/edit.png" @click="EditElement(contact)">
+                    <img src="../../assets/icons/delete.png" @click="DeleteElement(contact)">
+                </div>
 
             </div>
 
-            <div v-else v-for="pw in this.pwList" class="listElement" >
+            <div v-else v-for="pw in this.pwList" class="listElement"  @click="LaunchElement(pw)">
 
                 <img src="../../assets/icons/test.png">
                 <div class="textTitle">
@@ -143,6 +166,7 @@ export default {
         border: 1px solid;
         border-style: solid none;
         position: relative;
+        cursor: pointer;
     }
 
     .listElement img {
@@ -163,6 +187,8 @@ export default {
     .textTitle p{
         margin: 1px;
     }
+
+    .textTitle h4{margin: 0;}
 
     .listNavbar{
         align-self: center;
