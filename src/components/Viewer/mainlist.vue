@@ -55,9 +55,29 @@ export default {
             }
             
         },
-        LaunchElement(e){
-            //alert(e.name);
-        }
+
+        LaunchElement(e){       
+            this.$emit('handlerObj', Object.assign({}, e, {mode: "view", id: this.GetId(e)}));
+        },
+        
+        EditElement(e){
+            this.$emit('handlerObj', Object.assign({}, e, {mode: "edit", id: this.GetId(e)}));
+        },
+
+        AddElement(){
+            this.$emit('handlerObj', {mode: "add", type: this.curPanel});
+        },
+
+        GetId(e){
+            switch (e.type) {
+                case "password": return this.pwList.indexOf(e);
+                    break;
+                case "note": return this.noteList.indexOf(e);
+                    break;
+                case "contact": return this.contactList.indexOf(e);
+            };
+        },
+
     }
 }
 </script>
@@ -67,14 +87,14 @@ export default {
 
         <div id="mainHeader">
             <h2 class="unselectable">{{curPanel}}</h2>
-            <button>Add Item</button>
+            <button @click="AddElement()">Add Item</button>
         </div>
 
         <div id="listContainer">
-            <div v-if="this.curPanel == 'Notes'" v-for="note in this.noteList" class="listElement"  @click="LaunchElement(note)">
+            <div v-if="this.curPanel == 'Notes'" v-for="note in this.noteList" class="listElement">
 
                 <img src="../../assets/icons/test.png">
-                <div class="textTitle">
+                <div class="textTitle" @click="LaunchElement(note);">
                     <h4>{{note.name}}</h4>
                 </div>
                 <div class="listNavbar">
@@ -84,10 +104,10 @@ export default {
 
             </div>
 
-            <div v-else-if="this.curPanel == 'Contacts'" v-for="contact in this.contactList" class="listElement" @click="LaunchElement(contact)">
+            <div v-else-if="this.curPanel == 'Contacts'" v-for="contact in this.contactList" class="listElement">
 
                 <img src="../../assets/icons/test.png">
-                <div class="textTitle">
+                <div class="textTitle" @click="LaunchElement(contact)">
                     <h4>{{contact.name}}</h4>
                 </div>
                 <div class="listNavbar">  
@@ -97,10 +117,10 @@ export default {
 
             </div>
 
-            <div v-else v-for="pw in this.pwList" class="listElement"  @click="LaunchElement(pw)">
+            <div v-else v-for="pw in this.pwList" class="listElement">
 
                 <img src="../../assets/icons/test.png">
-                <div class="textTitle">
+                <div class="textTitle" @click="LaunchElement(pw)">
                     <p>{{pw.web}}</p>
                     <p><small>{{pw.username}}</small></p>
                 </div>
@@ -166,7 +186,6 @@ export default {
         border: 1px solid;
         border-style: solid none;
         position: relative;
-        cursor: pointer;
     }
 
     .listElement img {
@@ -182,13 +201,22 @@ export default {
     align-self: center;
     display: flex;
     flex-direction: column;
+    width: auto;
+    cursor: pointer;
     }
 
     .textTitle p{
         margin: 1px;
     }
 
-    .textTitle h4{margin: 0;}
+    .textTitle p small{
+        text-decoration: underline;
+    }
+
+    .textTitle h4{
+        margin: 0;
+        text-decoration: underline;
+    }
 
     .listNavbar{
         align-self: center;

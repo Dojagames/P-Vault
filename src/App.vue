@@ -2,29 +2,38 @@
 import Login from './components/Login.vue';
 import drawer from './components/Viewer/drawer.vue';
 import mainlist from './components/Viewer/mainlist.vue';
+import PwIntegration from './components/Element-Integrations/PwIntegration.vue';
 
 export default {
   data() {
     return {
       loginStatus: false,
-      window: "main",
+      window: "password",
       drawerPanel: "Passwords",
+      handlerObj: {},
     }
   },
   components: {
     Login,
     drawer,
-    mainlist
+    mainlist,
+    PwIntegration
   },
   watch: {
     loginStatus() {
       if(this.loginStatus === true){
         this.window = "main";
       }
-    }
+    },
   },
   mount: {
 
+  },
+  methods: {
+    HandleHandlerObj(e){
+      this.handlerObj = e;
+      this.window = e.type;
+    }
   }
 }
 </script>
@@ -36,20 +45,20 @@ export default {
   </div>
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
-    <drawer @currentPanel="(curPanel) => drawerPanel = curPanel"></drawer>
-    <mainlist :curPanel=drawerPanel></mainlist>
+    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel"></drawer>
+    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel></mainlist>
   </div>
 
-  <div id="addContainer" v-if="window === 'add'" class="mainContainer">
-
+  <div id="pwInteractionContainer" v-if="window === 'password'" class="mainContainer elementContainer">
+      <PwIntegration :element=handlerObj > </PwIntegration>
   </div>
 
-  <div id="editContainer" v-if="window === 'edit'" class="mainContainer">
-
+  <div id="noteInteractionContainer" v-if="window === 'note'" class="mainContainer elementContainer">
+        <!-- <noteInteraction :element=element > </noteInteraction> -->
   </div>
 
-  <div id="viewContainer" v-if="window === 'view'" class="mainContainer">
-
+  <div id="contactInteractionContainer" v-if="window === 'contact'" class="mainContainer elementContainer">
+      <!-- <contactInteraction :element=element > </contactInteraction> -->
   </div>
 
   <div id="settingsContainer" v-if="window === 'view'" class="mainContainer">
@@ -84,6 +93,14 @@ export default {
     min-height: 200px;
     height: 30%;
   }
+
+  .elementContainer{
+    min-width: 300px;
+    width: 22%;
+    min-height: 500px;
+    height: 65%;
+  }
+
 </style>
 
 <style>
