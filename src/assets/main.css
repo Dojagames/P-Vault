@@ -1,0 +1,10 @@
+body{
+    display: block;
+    background-image: url("wp.png");
+    color: white;
+    margin: 0;
+}
+
+* button:hover {
+    cursor: pointer;
+}
