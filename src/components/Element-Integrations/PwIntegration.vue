@@ -2,7 +2,11 @@
 export default {
     data() {
         return {
-            
+            elementName: "",
+            elementUsername: "",
+            elementPw: "",
+            elementWeb: "",
+            elementFolder: "",
         }
     },
     props: {
@@ -18,7 +22,22 @@ export default {
         
     },
     methods: {
-        
+        Cancel(){
+            this.$emit('callback', {type:"cancel"});
+        },
+
+        Save(){
+            this.$emit('callback', {
+                mode: this.element.mode, 
+                name: this.elementName, 
+                username: this.elementUsername, 
+                pw: this.elementPw, 
+                web: this.elementWeb,
+                folder: this.elementFolder,
+                type: this.element.type,
+                id: this.element.id, 
+            });
+        },
     }
 }
 </script>
@@ -34,21 +53,21 @@ export default {
         <h1 class="elementHeader">Add Password</h1>
         <div class="elementField">
             <h2>Name</h2>
-            <div class="elementInput"><input type="text" placeholder="Name"></div>
+            <div class="elementInput"><input type="text" placeholder="Name" v-model="elementName"></div>
             <div class="elementField">
                 <h2>LoginDetail</h2>
-                <div class="elementInput"><input type="text" placeholder="Username" id="usernameTextPw"></div>
-                <div class="elementInput"><input type="text" placeholder="Password" id="passwordTextPw"></div>
+                <div class="elementInput"><input type="text" placeholder="Username" id="usernameTextPw" v-model="elementUsername"></div>
+                <div class="elementInput"><input type="text" placeholder="Password" id="passwordTextPw" v-model="elementPw"></div>
                 <p id="genPw"><small>Generate Password</small></p>
-                <div class="elementInput" style="margin-top: 20px;"><input type="text" placeholder="Website" id="websiteTextPW"></div>
+                <div class="elementInput" style="margin-top: 20px;"><input type="text" placeholder="Website" v-model="elementWeb"></div>
             </div>
             <div class="PwField">
                 <h2>Folder</h2>
-                <div class="elementInput"><input type="text" placeholder="Folder" id="folderTextPw"></div>
+                <div class="elementInput"><input type="text" placeholder="Folder" v-model="elementFolder"></div>
             </div>
             <div class="elementField">
-                <button class="cancelBtn">Cancel</button>
-                <button class="saveBtn">Save</button>
+                <button class="cancelBtn" @click="Cancel()">Cancel</button>
+                <button class="saveBtn" @click="Save()">Save</button>
             </div>
         </div>
 

@@ -8,9 +8,10 @@ export default {
   data() {
     return {
       loginStatus: false,
-      window: "password",
+      window: "main",
       drawerPanel: "Passwords",
       handlerObj: {},
+      passbackElement: {type: "cancel"},
     }
   },
   components: {
@@ -33,6 +34,13 @@ export default {
     HandleHandlerObj(e){
       this.handlerObj = e;
       this.window = e.type;
+    },
+    handleElementCallback(e){
+      this.window = "main";
+      if(e.type === "cancel") {return} 
+      alert(e.name);
+      this.passbackElement = e;
+      
     }
   }
 }
@@ -46,11 +54,11 @@ export default {
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
     <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel"></drawer>
-    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel></mainlist>
+    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :passBack=this.passbackElement></mainlist>
   </div>
 
   <div id="pwInteractionContainer" v-if="window === 'password'" class="mainContainer elementContainer">
-      <PwIntegration :element=handlerObj > </PwIntegration>
+      <PwIntegration @callback="(el) => this.handleElementCallback(el)" :element=handlerObj> </PwIntegration>
   </div>
 
   <div id="noteInteractionContainer" v-if="window === 'note'" class="mainContainer elementContainer">

@@ -19,12 +19,17 @@ export default {
     },
     props: {
         curPanel: String,
+        passBack: Object,
     },
     components: {
         
     },
     watch: {
-       
+        passBack(){
+        alert(this.passBack.name);  
+        if(this.passBack.type === "cancel") {return};
+        if(this.passBack.mode === "add") {this.AddPassbackElement(this.passBack)}; 
+       }
     },
     mount: {
         
@@ -65,7 +70,18 @@ export default {
         },
 
         AddElement(){
-            this.$emit('handlerObj', {mode: "add", type: this.curPanel});
+            const _type = this.GetType(this.curPanel);
+            this.$emit('handlerObj', {mode: "add", type: _type});
+        },
+
+        GetType(e){
+            switch (e) {
+                case "Passwords": return "password";
+                    break;
+                case "Notes": return "note";
+                    break;
+                case "Contacts": return "contact";
+            };
         },
 
         GetId(e){
@@ -78,6 +94,19 @@ export default {
             };
         },
 
+
+        AddPassbackElement(e){
+            if(e.type === "password"){
+                this.pwList.push(e);
+            }
+        },
+
+
+        RemovePassbackProperties(e){
+            delete e.mode;
+            delete e.id;
+            return e;
+        }
     }
 }
 </script>
