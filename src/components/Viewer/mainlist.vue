@@ -25,10 +25,12 @@ export default {
         
     },
     watch: {
-        passBack(){
-        alert(this.passBack.name);  
-        if(this.passBack.type === "cancel") {return};
-        if(this.passBack.mode === "add") {this.AddPassbackElement(this.passBack)}; 
+        passBack: {
+            handler(){
+                alert(this.passBack.name); 
+                if(this.passBack.mode === "add") {this.AddPassbackElement(this.passBack)}; 
+            },
+            immediate: true
        }
     },
     mount: {
