@@ -17,7 +17,7 @@ function savePw(_list, _key){
         _arr.push(_obj);
     });
 
-    localStorage.setItem("list1",  JSON.stringify(_list));
+    localStorage.setItem("list1",  JSON.stringify(_arr));
 }
 
 function saveNotes(_list, _key){
@@ -70,7 +70,7 @@ function LoadPw(_key){
         } 
         _arr.push(_obj);
     });
-    return _temp;
+    return _arr;
 }
 
 function loadNotes(_key){
