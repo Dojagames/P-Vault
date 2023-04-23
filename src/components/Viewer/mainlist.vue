@@ -101,12 +101,20 @@ export default {
         AddPassbackElement(e){
             if(e.type === "password"){
                 this.pwList.push(e);
+            } else if(e.type === "note"){ 
+                this.noteList.push(e);
+            } else if(e.type === "contact"){ 
+                this.contactList.push(e);
             }
         },
 
         EditPassbackElement(e){
             if(e.type === "password"){
                 this.pwList[e.id] = e;
+            } else if (e.type === "note"){ 
+                this.noteList[e.id] = e;
+            } else if (e.type === "contact"){ 
+                this.contactList[e.id] = e;
             }
         },
 

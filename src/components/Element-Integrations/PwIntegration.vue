@@ -43,48 +43,27 @@ export default {
         },
 
         Save(){
-            if(this.element.mode == "add"){
+            if(this.elementPw == null) this.elementPw = "";
+            if(this.elementName == null) this.elementName = "";
 
-                if(this.elementPw == null) this.elementPw = "";
-                if(this.elementName == null) this.elementName = "";
-
-                if (this.elementPw == '' || this.elementName == ''){
-                    if (this.elementPw == '') {this.noPw = true;} else {this.noPw = false;}
-                    if (this.elementName == '') {this.noName = true;} else this.noName = false;
-                    return
-                }
-
-                if(this.elementFolder == '') this.elementFolder = "none";
-
-                this.$emit('callback', {
-                    mode: this.element.mode, 
-                    name: this.elementName, 
-                    username: this.elementUsername, 
-                    pw: this.elementPw, 
-                    web: this.elementWeb,
-                    folder: this.elementFolder,
-                    type: this.element.type,
-                    id: this.element.id, 
-                });
-
-            } else if (this.element.mode == "edit") {
-                if (this.elementPw == '' || this.elementName == ''){
-                    if (this.elementPw == '') {this.noPw = true;} else {this.noPw = false;}
-                    if (this.elementName == '') {this.noName = true;} else this.noName = false;
-                    return
-                }
-
-                this.$emit('callback', {
-                    mode: this.element.mode, 
-                    name: this.elementName, 
-                    username: this.elementUsername, 
-                    pw: this.elementPw, 
-                    web: this.elementWeb,
-                    folder: this.elementFolder,
-                    type: this.element.type,
-                    id: this.element.id, 
-                });
+            if (this.elementPw == '' || this.elementName == ''){
+                if (this.elementPw == '') {this.noPw = true;} else {this.noPw = false;}
+                if (this.elementName == '') {this.noName = true;} else this.noName = false;
+                return
             }
+
+            if(this.elementFolder == '') this.elementFolder = "none";
+
+            this.$emit('callback', {
+                mode: this.element.mode, 
+                name: this.elementName, 
+                username: this.elementUsername, 
+                pw: this.elementPw, 
+                web: this.elementWeb,
+                folder: this.elementFolder,
+                type: this.element.type,
+                id: this.element.id, 
+            });
         },
     }
 }

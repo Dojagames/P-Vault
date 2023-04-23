@@ -3,6 +3,7 @@ import Login from './components/Login.vue';
 import drawer from './components/Viewer/drawer.vue';
 import mainlist from './components/Viewer/mainlist.vue';
 import PwIntegration from './components/Element-Integrations/PwIntegration.vue';
+import NoteIntegration from './components/Element-Integrations/NoteIntegration.vue';
 
 export default {
   data() {
@@ -18,7 +19,8 @@ export default {
     Login,
     drawer,
     mainlist,
-    PwIntegration
+    PwIntegration,
+    NoteIntegration
   },
   watch: {
     loginStatus() {
@@ -61,7 +63,7 @@ export default {
   </div>
 
   <div id="noteInteractionContainer" v-if="window === 'note'" class="mainContainer elementContainer">
-        <!-- <noteInteraction :element=element > </noteInteraction> -->
+        <NoteIntegration @callback="(el) => this.handleElementCallback(el)" :element=handlerObj > </NoteIntegration>
   </div>
 
   <div id="contactInteractionContainer" v-if="window === 'contact'" class="mainContainer elementContainer">
