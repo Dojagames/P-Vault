@@ -2,37 +2,21 @@
 export default {
     data() {
         return {
-            pwList: [
-                {name: "testname", username: "testuser", pw: "testPw", web: "https://google.com", folder: "none", type: "password"},
-                {name: "testname2", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none", type: "password"},
-                {name: "testname3", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none", type: "password"},
-            ],
-
-            noteList: [
-                {name: "testname", note: "testnote", folder: "none", type: "note"}
-            ],
-
-            contactList: [
-                {name: "testname", email: "testuser", number: "testPw", bday: "testwebsite.org", street: "testStreet", city: "testCity", type: "contact"}
-            ]
+           
         }
     },
     props: {
         curPanel: String,
-        passBack: Object,
+
+        pwList: Array,
+        noteList: Array,
+        contactList: Array,
     },
     components: {
         
     },
     watch: {
-        passBack: {
-            handler(){
-                if(this.passBack.mode === "add") {this.AddPassbackElement(this.passBack)}
-                else if(this.passBack.mode === "edit"){ this.EditPassbackElement(this.passBack)};
-                
-            },
-            immediate: true
-       }
+    
     },
     mount: {
         
@@ -95,27 +79,6 @@ export default {
                     break;
                 case "contact": return this.contactList.indexOf(e);
             };
-        },
-
-
-        AddPassbackElement(e){
-            if(e.type === "password"){
-                this.pwList.push(e);
-            } else if(e.type === "note"){ 
-                this.noteList.push(e);
-            } else if(e.type === "contact"){ 
-                this.contactList.push(e);
-            }
-        },
-
-        EditPassbackElement(e){
-            if(e.type === "password"){
-                this.pwList[e.id] = e;
-            } else if (e.type === "note"){ 
-                this.noteList[e.id] = e;
-            } else if (e.type === "contact"){ 
-                this.contactList[e.id] = e;
-            }
         },
 
 

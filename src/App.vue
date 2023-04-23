@@ -13,7 +13,23 @@ export default {
       window: "main",
       drawerPanel: "Passwords",
       handlerObj: {},
-      passbackElement: {type: "cancel"},
+      element: {type: "cancel"},
+
+      pwList: [
+          {name: "testname", username: "testuser", pw: "testPw", web: "https://google.com", folder: "none", type: "password"},
+          {name: "testname2", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none", type: "password"},
+          {name: "testname3", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none", type: "password"},
+      ],
+
+      noteList: [
+          {name: "testname", note: "testnote", folder: "none", type: "note"}
+      ],
+
+      contactList: [
+          {name: "testname", email: "testuser", number: "testPw", bday: "testwebsite.org", street: "testStreet", city: "testCity", type: "contact"}
+      ],
+
+
     }
   },
   components: {
@@ -42,9 +58,29 @@ export default {
     handleElementCallback(e){
       this.window = "main";
       if(e.type === "cancel") {return} 
-      this.passbackElement = e;
-      
-    }
+      if(e.mode === "add") this.AddElement(e);
+      if(e.mode === "edit") this.EditElement(e);
+    },
+
+    AddElement(e){
+        if(e.type === "password"){
+            this.pwList.push(e);
+        } else if(e.type === "note"){ 
+            this.noteList.push(e);
+        } else if(e.type === "contact"){ 
+            this.contactList.push(e);
+        }
+    },
+
+    EditElement(e){
+        if(e.type === "password"){
+            this.pwList[e.id] = e;
+        } else if (e.type === "note"){ 
+            this.noteList[e.id] = e;
+        } else if (e.type === "contact"){ 
+            this.contactList[e.id] = e;
+        }
+    },
   }
 }
 </script>
@@ -57,7 +93,7 @@ export default {
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
     <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" :curPanel=drawerPanel ></drawer>
-    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :passBack=this.passbackElement></mainlist>
+    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :pwList=pwList :noteList=noteList :contactList=contactList ></mainlist>
   </div>
 
   <div id="pwInteractionContainer" v-if="window === 'password'" class="mainContainer elementContainer">
