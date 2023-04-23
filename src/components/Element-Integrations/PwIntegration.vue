@@ -1,12 +1,17 @@
 <script>
+import { initCustomFormatter } from 'vue';
+
 export default {
     data() {
         return {
-            elementName: "",
+            elementName: null,
             elementUsername: "",
-            elementPw: "",
+            elementPw: null,
             elementWeb: "",
             elementFolder: "",
+
+            noName: false,
+            noPw: false,
         }
     },
     props: {
@@ -16,7 +21,18 @@ export default {
         
     },
     watch: {
-        
+        element: {
+            handler(){
+                if(this.element.mode === "view" || this.element.mode === "edit" ){
+                    this.elementName = this.element.name;
+                    this.elementUsername = this.element.username;
+                    this.elementPw = this.element.pw;
+                    this.elementWeb = this.element.web;
+                    this.elementFolder = this.element.folder;
+                }
+            },
+            immediate: true
+        }
     },
     mount: {
         
@@ -27,16 +43,48 @@ export default {
         },
 
         Save(){
-            this.$emit('callback', {
-                mode: this.element.mode, 
-                name: this.elementName, 
-                username: this.elementUsername, 
-                pw: this.elementPw, 
-                web: this.elementWeb,
-                folder: this.elementFolder,
-                type: this.element.type,
-                id: this.element.id, 
-            });
+            if(this.element.mode == "add"){
+
+                if(this.elementPw == null) this.elementPw = "";
+                if(this.elementName == null) this.elementName = "";
+
+                if (this.elementPw == '' || this.elementName == ''){
+                    if (this.elementPw == '') {this.noPw = true;} else {this.noPw = false;}
+                    if (this.elementName == '') {this.noName = true;} else this.noName = false;
+                    return
+                }
+
+                if(this.elementFolder == '') this.elementFolder = "none";
+
+                this.$emit('callback', {
+                    mode: this.element.mode, 
+                    name: this.elementName, 
+                    username: this.elementUsername, 
+                    pw: this.elementPw, 
+                    web: this.elementWeb,
+                    folder: this.elementFolder,
+                    type: this.element.type,
+                    id: this.element.id, 
+                });
+
+            } else if (this.element.mode == "edit") {
+                if (this.elementPw == '' || this.elementName == ''){
+                    if (this.elementPw == '') {this.noPw = true;} else {this.noPw = false;}
+                    if (this.elementName == '') {this.noName = true;} else this.noName = false;
+                    return
+                }
+
+                this.$emit('callback', {
+                    mode: this.element.mode, 
+                    name: this.elementName, 
+                    username: this.elementUsername, 
+                    pw: this.elementPw, 
+                    web: this.elementWeb,
+                    folder: this.elementFolder,
+                    type: this.element.type,
+                    id: this.element.id, 
+                });
+            }
         },
     }
 }
@@ -44,36 +92,36 @@ export default {
 
 <template>
 
-    <div id="viewContainer" v-if="element.type === 'view'" class="elementContainer">
+    <div id="elementContainer">
 
-    </div>
-
-    <div id="addContainer" v-if="true" class="elementContainer">
-
-        <h1 class="elementHeader">Add Password</h1>
+        <h1 class="elementHeader">{{element.mode.charAt(0).toUpperCase() + element.mode.slice(1)}} Password</h1>
         <div class="elementField">
             <h2>Name</h2>
-            <div class="elementInput"><input type="text" placeholder="Name" v-model="elementName"></div>
-            <div class="elementField">
-                <h2>LoginDetail</h2>
-                <div class="elementInput"><input type="text" placeholder="Username" id="usernameTextPw" v-model="elementUsername"></div>
-                <div class="elementInput"><input type="text" placeholder="Password" id="passwordTextPw" v-model="elementPw"></div>
-                <p id="genPw"><small>Generate Password</small></p>
-                <div class="elementInput" style="margin-top: 20px;"><input type="text" placeholder="Website" v-model="elementWeb"></div>
+            <div class="elementInput"><input type="text" placeholder="Name" v-model="elementName" :readonly="element.mode === 'view'"></div>
+            <div class="elementLowerTextWrapper" v-if="element.mode === 'add' || element.mode === 'edit'">
+            <p v-if="this.elementName == ''" class="warningText" :class="{redWarningText: noName}">Name cant be empty</p>
             </div>
-            <div class="PwField">
+            <div class="elementField">
+                <h2>Login Credentials</h2>
+                <div class="elementInput"><input type="text" placeholder="Username" id="usernameTextPw" v-model="elementUsername" :readonly="element.mode === 'view'"></div>
+                <div class="elementInputWrapper">
+                    <div class="elementInput"><input type="text" placeholder="Password" id="passwordTextPw" v-model="elementPw" :readonly="element.mode === 'view'"></div>
+                    <div class="elementLowerTextWrapper" v-if="element.mode === 'add' || element.mode === 'edit'">
+                        <p v-if="this.elementPw === ''" class="warningText" :class="{redWarningText: noPw}">Password cant be empty</p>
+                        <p id="genPw" v-if="element.mode === 'add'"><small>Generate Password</small></p>
+                    </div>
+                </div>
+                <div class="elementInput" style="margin-top: 20px;"><input type="text" placeholder="Website" v-model="elementWeb" :readonly="element.mode === 'view'"></div>
+            </div>
+            <div class="elementField">
                 <h2>Folder</h2>
-                <div class="elementInput"><input type="text" placeholder="Folder" v-model="elementFolder"></div>
+                <div class="elementInput"><input type="text" placeholder="Folder" v-model="elementFolder" :readonly="element.mode === 'view'"></div>
             </div>
             <div class="elementField">
-                <button class="cancelBtn" @click="Cancel()">Cancel</button>
-                <button class="saveBtn" @click="Save()">Save</button>
+                <button class="cancelBtn" :class="{largebtn: element.mode === 'view'}" @click="Cancel()">Cancel</button>
+                <button class="saveBtn" v-if="element.mode === 'add' || element.mode === 'edit'" @click="Save()">Save</button>
             </div>
         </div>
-
-    </div>
-
-    <div id="editContainer" v-if="element.type === 'add'" class="elementContainer">
 
     </div>
 

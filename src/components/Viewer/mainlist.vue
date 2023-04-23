@@ -27,8 +27,9 @@ export default {
     watch: {
         passBack: {
             handler(){
-                alert(this.passBack.name); 
-                if(this.passBack.mode === "add") {this.AddPassbackElement(this.passBack)}; 
+                if(this.passBack.mode === "add") {this.AddPassbackElement(this.passBack)}
+                else if(this.passBack.mode === "edit"){ this.EditPassbackElement(this.passBack)};
+                
             },
             immediate: true
        }
@@ -100,6 +101,12 @@ export default {
         AddPassbackElement(e){
             if(e.type === "password"){
                 this.pwList.push(e);
+            }
+        },
+
+        EditPassbackElement(e){
+            if(e.type === "password"){
+                this.pwList[e.id] = e;
             }
         },
 

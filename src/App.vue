@@ -38,7 +38,6 @@ export default {
     handleElementCallback(e){
       this.window = "main";
       if(e.type === "cancel") {return} 
-      alert(e.name);
       this.passbackElement = e;
       
     }
