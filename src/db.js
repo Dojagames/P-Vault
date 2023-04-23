@@ -67,13 +67,14 @@ function LoadPw(_key){
             pw: DecryptMsg (e.c, _key),
             web: DecryptMsg (e.d, _key),
             folder: DecryptMsg (e.e, _key),
+            type: "password"
         } 
         _arr.push(_obj);
     });
     return _arr;
 }
 
-function loadNotes(_key){
+function LoadNotes(_key){
     var _temp = JSON.parse(localStorage.getItem("list2"));
     _arr = [];
     _temp.forEach(e =>{
@@ -81,13 +82,14 @@ function loadNotes(_key){
             name: DecryptMsg (e.a, _key),
             note: DecryptMsg (e.b, _key),
             folder: DecryptMsg (e.c, _key),
+            type: "note"
         } 
         _arr.push(_obj);
     });
     return _arr;
 }
 
-function loadContacts(_key){
+function LoadContacts(_key){
     var _temp = JSON.parse(localStorage.getItem("list3"));
     _arr = [];
     _temp.forEach(e =>{
@@ -98,16 +100,28 @@ function loadContacts(_key){
             bday: DecryptMsg (e.d, _key),
             street: DecryptMsg (e.e, _key),
             city: DecryptMsg (e.f, _key),
+            type: "contact"
         } 
         _arr.push(_obj);
     });
     return _arr;
 }
 
-function GetList(){
-    return [
-        {name: "testname", username: "testuser", pw: "testPw", web: "https://google.com", folder: "none", type: "password"},
-        {name: "testname2", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none", type: "password"},
-        {name: "testname3", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none", type: "password"},
-    ]
+
+
+function checkIfUserExists(){
+    
+    if(JSON.parse(localStorage.getItem("user")) != null) {
+        return true;
+    } else return false;
+}
+
+function RegisterUser(_key){
+    localStorage.setItem("user",  JSON.stringify(EncryptMsg ("decypted", _key)));
+}
+
+function CheckPassword(_pw){
+    if(DecryptMsg (JSON.parse(localStorage.getItem("user")), _pw) === "decypted"){
+        return true;
+    } else return false;
 }

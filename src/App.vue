@@ -9,23 +9,19 @@ import ContactIntegration from './components/Element-Integrations/ContactIntegra
 export default {
   data() {
     return {
+      key: "",
+
       loginStatus: false,
-      window: "main",
+      window: "login",
       drawerPanel: "Passwords",
       handlerObj: {},
       element: {type: "cancel"},
 
-      pwList: LoadPw("test"),
+      pwList: [],
 
-      noteList: [
-          {name: "testname", note: "testnote", folder: "none", type: "note"}
-      ],
+      noteList: [],
 
-      contactList: [
-          {name: "testname", email: "testuser", number: "testPw", bday: "testwebsite.org", street: "testStreet", city: "testCity", type: "contact"}
-      ],
-
-
+      contactList: [],
     }
   },
   components: {
@@ -37,10 +33,11 @@ export default {
     ContactIntegration
   },
   watch: {
-    loginStatus() {
-      if(this.loginStatus === true){
-        this.window = "main";
-      }
+    key() {
+      this.window = "main";
+      this.pwList = LoadPw(this.key);
+      this.noteList = LoadNotes(this.key);
+      this.contactList = LoadContacts(this.key);
     },
   },
   mount: {
@@ -92,7 +89,7 @@ export default {
 <template>
 
   <div v-if="window === 'login'" id="loginContainer" class="mainContainer">
-    <Login @response="(status) => loginStatus = status"></Login>
+    <Login @key="(_key) => key = _key"></Login>
   </div>
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
