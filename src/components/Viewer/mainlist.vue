@@ -131,7 +131,7 @@ export default {
                 <img src="../../assets/icons/test.png">
                 <div class="textTitle" @click="LaunchElement(pw)">
                     <p>{{pw.web}}</p>
-                    <p><small>{{pw.username}}</small></p>
+                    <p><small>{{pw.name}}</small></p>
                 </div>
 
                 <div class="listNavbar">

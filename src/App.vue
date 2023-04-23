@@ -15,11 +15,7 @@ export default {
       handlerObj: {},
       element: {type: "cancel"},
 
-      pwList: [
-          {name: "testname", username: "testuser", pw: "testPw", web: "https://google.com", folder: "none", type: "password"},
-          {name: "testname2", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none", type: "password"},
-          {name: "testname3", username: "testuser", pw: "testPw", web: "testwebsite.org", folder: "none", type: "password"},
-      ],
+      pwList: LoadPw("test"),
 
       noteList: [
           {name: "testname", note: "testnote", folder: "none", type: "note"}
@@ -60,6 +56,14 @@ export default {
       if(e.type === "cancel") {return} 
       if(e.mode === "add") this.AddElement(e);
       if(e.mode === "edit") this.EditElement(e);
+
+      if(e.type === "password"){
+        savePw(this.pwList, "test");
+      } else if(e.type === "note"){
+        saveNotes(this.noteList, "test");
+      } else if(e.type === "contact"){
+        saveContacts(this.contactList, "test");
+      }
     },
 
     AddElement(e){
