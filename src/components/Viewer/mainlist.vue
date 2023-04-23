@@ -13,7 +13,7 @@ export default {
             ],
 
             contactList: [
-                {name: "testname", email: "testuser", number: "testPw", bday: "testwebsite.org", address: "none", city: "none", type: "contact"}
+                {name: "testname", email: "testuser", number: "testPw", bday: "testwebsite.org", street: "testStreet", city: "testCity", type: "contact"}
             ]
         }
     },
