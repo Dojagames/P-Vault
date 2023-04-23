@@ -54,7 +54,7 @@ export default {
   </div>
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
-    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel"></drawer>
+    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" :curPanel=drawerPanel ></drawer>
     <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :passBack=this.passbackElement></mainlist>
   </div>
 

@@ -13,11 +13,14 @@ export default {
         ]
       }
    },
+   props: {
+    curPanel: String,
+   },
    components: {
    
    },
    watch: {
-    
+
    },
    mount: {
    
@@ -39,7 +42,7 @@ export default {
         </div>
     
         <div id="drawerPanels">
-            <div v-for="panel in this.panels" class="panels" :class="{selected: panel.name == this.currentPanel}" v-on:click="selectPanel(panel)">
+            <div v-for="panel in this.panels" class="panels" :class="{selected: panel.name == this.curPanel}" v-on:click="selectPanel(panel)">
                 <img :src="panel.imgSrc">
                 <p class="panelText unselectable">{{panel.name}}</p>
             </div>
