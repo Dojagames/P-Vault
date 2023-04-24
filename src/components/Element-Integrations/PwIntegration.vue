@@ -65,6 +65,9 @@ export default {
                 id: this.element.id, 
             });
         },
+        genPw(){
+            this.elementPw = GeneratePassword(16);
+        }
     }
 }
 </script>
@@ -87,7 +90,7 @@ export default {
                     <div class="elementInput"><input type="text" placeholder="Password" id="passwordTextPw" v-model="elementPw" :readonly="element.mode === 'view'"></div>
                     <div class="elementLowerTextWrapper" v-if="element.mode === 'add' || element.mode === 'edit'">
                         <p v-if="this.elementPw === ''" class="warningText" :class="{redWarningText: noPw}">Password cant be empty</p>
-                        <p id="genPw" v-if="element.mode === 'add'"><small>Generate Password</small></p>
+                        <p id="genPw" v-if="element.mode === 'add'" class="pointerCursor" @click="genPw()" ><small>Generate Password</small></p>
                     </div>
                 </div>
                 <div class="elementInput" style="margin-top: 20px;"><input type="text" placeholder="Website" v-model="elementWeb" :readonly="element.mode === 'view'"></div>
