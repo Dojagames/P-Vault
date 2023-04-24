@@ -7,9 +7,8 @@ function EncryptMsg (_msg, _key){
 function DecryptMsg (_msg, _key){
     let decryptedMessage;
     try{
-        let bytes =  CryptoJS.AES.decrypt(_msg, _key);
+        let bytes = CryptoJS.AES.decrypt(_msg, _key);
         decryptedMessage = bytes.toString(CryptoJS.enc.Utf8);
-        console.log(CryptoJS.AES.decrypt(_msg, "test").toString(CryptoJS.enc.Utf8));
     } catch(e){
         decryptedMessage = "encrypted";
     }

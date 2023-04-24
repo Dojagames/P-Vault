@@ -35,17 +35,7 @@ export default {
         },
 
         DeleteElement(e) {
-            const response = confirm("do you want to delete: " + e.name);
-            if(response){
-                if(e.type === "password") {
-                    this.pwList = this.pwList.filter((t) => t !== e)
-                } else if (e.type === "note") {
-                    this.noteList = this.noteList.filter((t) => t !== e)
-                } else if (e.type === "contact") {
-                    this.contactList = this.contactList.filter((t) => t !== e)
-                }
-            }
-            
+            this.$emit('handlerObj', Object.assign({}, e, {mode: "del"}));
         },
 
         LaunchElement(e){       

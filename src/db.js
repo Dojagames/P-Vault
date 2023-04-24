@@ -59,6 +59,7 @@ function loadAll(){
 
 function LoadPw(_key){
     var _temp = JSON.parse(localStorage.getItem("list1"));
+    if(_temp == null) return [];
     _arr = [];
     _temp.forEach(e =>{
         var _obj = {
@@ -76,6 +77,7 @@ function LoadPw(_key){
 
 function LoadNotes(_key){
     var _temp = JSON.parse(localStorage.getItem("list2"));
+    if(_temp == null) return [];
     _arr = [];
     _temp.forEach(e =>{
         var _obj = {
@@ -91,6 +93,7 @@ function LoadNotes(_key){
 
 function LoadContacts(_key){
     var _temp = JSON.parse(localStorage.getItem("list3"));
+    if(_temp == null) return [];
     _arr = [];
     _temp.forEach(e =>{
         var _obj = {
@@ -124,4 +127,14 @@ function CheckPassword(_pw){
     if(DecryptMsg (JSON.parse(localStorage.getItem("user")), _pw) === "decypted"){
         return true;
     } else return false;
+}
+
+function SaveSessionCookie(_key){
+    sessionStorage.setItem("sessionCookie", EncryptMsg (_key, "J58yS7q3"));
+}
+
+function GetSessionCookie(){
+    if(sessionStorage.getItem("sessionCookie") == null) return null;
+    var _temp = sessionStorage.getItem("sessionCookie");
+    return (DecryptMsg (_temp, "J58yS7q3"));
 }

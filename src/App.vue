@@ -5,6 +5,7 @@ import mainlist from './components/Viewer/mainlist.vue';
 import PwIntegration from './components/Element-Integrations/PwIntegration.vue';
 import NoteIntegration from './components/Element-Integrations/NoteIntegration.vue';
 import ContactIntegration from './components/Element-Integrations/ContactIntegration.vue';
+import { registerRuntimeCompiler } from 'vue';
 
 export default {
   data() {
@@ -45,6 +46,10 @@ export default {
   },
   methods: {
     HandleHandlerObj(e){
+      if(e.mode == "del"){
+        this.DeleteElement(e);
+        return;
+      }
       this.handlerObj = e;
       this.window = e.type;
     },
@@ -55,11 +60,11 @@ export default {
       if(e.mode === "edit") this.EditElement(e);
 
       if(e.type === "password"){
-        savePw(this.pwList, "test");
+        savePw(this.pwList, this.key);
       } else if(e.type === "note"){
-        saveNotes(this.noteList, "test");
+        saveNotes(this.noteList,  this.key);
       } else if(e.type === "contact"){
-        saveContacts(this.contactList, "test");
+        saveContacts(this.contactList,  this.key);
       }
     },
 
@@ -82,6 +87,24 @@ export default {
             this.contactList[e.id] = e;
         }
     },
+
+    DeleteElement(e) {
+        const response = confirm("do you want to delete: " + e.name);
+        if(response){
+            delete e.mode;
+            if(e.type === "password") {
+                this.pwList = this.pwList.filter((t) => JSON.stringify(t) !== JSON.stringify(e));
+                savePw(this.pwList, this.key);
+            } else if (e.type === "note") {
+                this.noteList = this.noteList.filter(JSON.stringify(t) !== JSON.stringify(e));
+                saveNotes(this.noteList,  this.key);
+            } else if (e.type === "contact") {
+                this.contactList = this.contactList.filter(JSON.stringify(t) !== JSON.stringify(e));
+                saveContacts(this.contactList,  this.key);
+            }
+        }
+            
+    },
   }
 }
 </script>
@@ -89,7 +112,7 @@ export default {
 <template>
 
   <div v-if="window === 'login'" id="loginContainer" class="mainContainer">
-    <Login @key="(_key) => key = _key"></Login>
+    <Login @key="(_key) => this.key = _key"></Login>
   </div>
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >

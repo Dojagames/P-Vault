@@ -8,26 +8,55 @@
                 pwInput2: "",
                 exists: false,
                 showPassword: false,
+                wrongPw: false,
+                noMatch: false,
+                notLongEnougth: false,
             }
         },
         methods: {
             checkPw(){
                 if(CheckPassword(this.pwInput)){
+                    SaveSessionCookie(this.pwInput);
                     this.$emit('key', this.pwInput);
                 } else {
-                    alert("fail");
+                    this.pwInput = "";
+                    this.wrongPw = true;
                 }
             },
             Register(){
                 if(this.pwInput == this.pwInput2){
+                    if(this.pwInput.length <= 11){
+                        this.notLongEnougth = true;
+                        return;
+                    } 
                     RegisterUser(this.pwInput);
-                    this.$emit('key', this.pwInput)
+                    SaveSessionCookie(this.pwInput);
+                    this.$emit('key', this.pwInput);
+                } else {
+                    this.pwInput2 = "";
+                    this.noMatch = true;
                 }
-            }
+            },
         },
         created() {
             this.exists = checkIfUserExists();
         },
+        async mounted(){
+            await this.$nextTick()
+            var _tempKey = GetSessionCookie();
+            if(_tempKey != null){
+                this.$emit('key', _tempKey);
+            }
+        },
+        watch: {
+            pwInput(){
+                if(this.pwInput != ""){
+                    this.wrongPw = false;
+                    this.notLongEnougth = false;
+                    this.noMatch = false;
+                }
+            }
+        }
     }
 </script>
 
@@ -38,6 +67,9 @@
         <form  @submit.prevent="checkPw" class="row">
             <input v-model="pwInput" class="txtInput" v-bind:type="[showPassword ? 'text' : 'password']">
             <img :src="[showPassword ? '../../src/assets/icons/hide.png' : '../../src/assets/icons/view.png']" id="showPwBtn" @click="showPassword = !showPassword">
+            <div class="elementLowerTextWrapper">
+                <p v-if="wrongPw" class="warningText">Wrong Password</p>
+            </div>
             <button>Login</button>
         </form>
     </div>
@@ -47,6 +79,10 @@
             <input v-model="pwInput" class="txtInput" v-bind:type="[showPassword ? 'text' : 'password']">
             <img :src="[showPassword ? '../../src/assets/icons/hide.png' : '../../src/assets/icons/view.png']" id="showPwBtn" @click="showPassword = !showPassword">
             <input v-model="pwInput2" class="txtInput" v-bind:type="[showPassword ? 'text' : 'password']">
+            <div class="elementLowerTextWrapper">
+                <p v-if="noMatch" class="warningText">Passwords have to match</p>
+                <p v-if="notLongEnougth" class="warningText">Password has to at least 12 Characters long</p>
+            </div>
             <button>Register</button>
         </form>
     </div>
@@ -102,5 +138,16 @@
     top: 70%;
 }
 
+.warningText{
+margin: 0;
+color: red;
 
+}
+
+.elementLowerTextWrapper{
+    margin-left: calc(10% - 15px);
+    padding-top: 6px;
+    height: 18px;
+    max-height: fit-content;
+}
 </style>
