@@ -13,7 +13,9 @@ export default {
         
     },
     methods: {
-        
+        GoBack(){
+            this.$emit("handler", "main")
+        }
     },
     created() {
         
@@ -30,7 +32,7 @@ export default {
 
 <template>
     <div id="container">
-        <div id="PwElement">
+        <div id="PwElement" class="settingElement">
             <h1>Password Generator Preset</h1>
             <div id="settingsBox">
                 <div class="settingWrapper"><input type="checkbox" v-model="lowerCase"><p>Lowercase</p></div>
@@ -43,8 +45,13 @@ export default {
                 <p>length</p>
             </div>
         </div>
-        <div id="ChangePwElement">
-            
+        <div id="ChangePwElement" class="settingElement">
+            <h1>ChangePw</h1>
+        </div>
+
+        <div id="exitWrapper">
+            <button id="saveBtn">Save</button>
+            <button id="exitBtn" @click="GoBack()">Exit</button>
         </div>
     </div>
 </template>
@@ -59,18 +66,35 @@ export default {
         position: relative;
     }
 
+    .settingElement{
+        border: 1px solid white;
+        margin: 10px;
+        padding: 5px;
+    }
+
     h1{
         text-align: center;
         margin: 0;
         padding-top: 10px;
     }
 
+    button{
+        margin: 30px 0 0 0;
+        width: 50%;
+        height: 35px;
+        background-color: hsl(212, 100%, 50%);
+        border-radius: 12px;
+        border-width: 0px;
+        padding: 1px 15px;
+        outline: none;
+        color: white;
+    }
+
     #PwElement{
-        border: 1px solid white;
-        margin: 10px;
-        padding: 5px;
+       
         position: relative;
         width: 35%;
+        min-width: 167px;
         min-height: 140px;
         max-height: 160px;
         height: 24%;
@@ -120,4 +144,37 @@ export default {
         margin-left: 50%;
         transform: translateX(-50%);
     }
+
+
+
+    #ChangePwElement{
+        width: 60%;
+        min-height: 140px;
+        max-height: 160px;
+        height: 24%;
+        position: absolute;
+        right: 0;
+        top: 0;
+   }
+
+   #exitWrapper{
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    height: fit-content;
+   }
+
+   #exitBtn{
+    background-color: grey;
+    width: 20%;
+    position: absolute;
+    right: 10px;
+   }
+
+   #saveBtn{
+    left: 10px;
+    width: 60%;
+    position: relative ;
+
+   }
 </style>

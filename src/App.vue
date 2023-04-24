@@ -113,6 +113,10 @@ export default {
 
     DrawerClickElement(e){
       this.window = e;
+    },
+
+    changeSettings(e){
+      this.window = "main"
     }
   }
 }
@@ -146,7 +150,7 @@ export default {
   </div>
 
   <div id="settingsContainer" v-if="window === 'settings'" class="mainContainer">
-    <Settings></Settings>
+    <Settings @handler="(_obj) => changeSettings(_obj)"></Settings>
   </div>
 
   <div style=" position: absolute; bottom: 0px; left: 10px;" class="unselectable">
