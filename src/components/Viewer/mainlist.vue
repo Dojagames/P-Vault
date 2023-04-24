@@ -7,7 +7,7 @@ export default {
     },
     props: {
         curPanel: String,
-
+        searchText: String,
         pwList: Array,
         noteList: Array,
         contactList: Array,
@@ -16,7 +16,7 @@ export default {
         
     },
     watch: {
-    
+
     },
     mount: {
         
@@ -27,11 +27,7 @@ export default {
         },
 
         async CopyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function() {
-                console.log('Async: Copying to clipboard was successful!');
-            }, function(err) {
-                console.error('Async: Could not copy text: ', err);
-            });
+            navigator.clipboard.writeText(text);
         },
 
         DeleteElement(e) {
@@ -77,6 +73,29 @@ export default {
             delete e.id;
             return e;
         }
+    },
+    computed: {
+        filteredPws(){
+            if(this.searchText == "" || this.searchText == undefined){
+                return this.pwList;
+            } else {
+                return this.pwList.filter((t) => t.name.toLowerCase().includes(this.searchText.toLowerCase()) || t.web.toLowerCase().includes(this.searchText.toLowerCase()));
+            }
+        },
+        filteredNotes(){
+            if(this.searchText == "" || this.searchText == undefined){
+                return this.noteList;
+            } else {
+                return this.noteList.filter((t) => t.name.toLowerCase().includes(this.searchText.toLowerCase()) || t.web.toLowerCase().includes(this.searchText.toLowerCase()));
+            }
+        },
+        filteredContacts(){
+            if(this.searchText == "" || this.searchText == undefined){
+                return this.contactList;
+            } else {
+                return this.contactList.filter((t) => t.name.toLowerCase().includes(this.searchText.toLowerCase()) || t.web.toLowerCase().includes(this.searchText.toLowerCase()));
+            }
+        },
     }
 }
 </script>
@@ -90,7 +109,7 @@ export default {
         </div>
 
         <div id="listContainer">
-            <div v-if="this.curPanel == 'Notes'" v-for="note in this.noteList" class="listElement">
+            <div v-if="this.curPanel == 'Notes'" v-for="note in this.filteredNotes" class="listElement">
 
                 <img src="../../assets/icons/test.png">
                 <div class="textTitle" @click="LaunchElement(note);">
@@ -103,7 +122,7 @@ export default {
 
             </div>
 
-            <div v-else-if="this.curPanel == 'Contacts'" v-for="contact in this.contactList" class="listElement">
+            <div v-else-if="this.curPanel == 'Contacts'" v-for="contact in this.filteredContacts" class="listElement">
 
                 <img src="../../assets/icons/test.png">
                 <div class="textTitle" @click="LaunchElement(contact)">
@@ -116,7 +135,7 @@ export default {
 
             </div>
 
-            <div v-else v-for="pw in this.pwList" class="listElement">
+            <div v-else v-for="pw in this.filteredPws" class="listElement">
 
                 <img src="../../assets/icons/test.png">
                 <div class="textTitle" @click="LaunchElement(pw)">

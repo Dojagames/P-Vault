@@ -120,15 +120,15 @@
     }
 
     button{
-    margin: 50px 35% 0 35%;
-    width: 30%;
-    height: 30px;
-    background-color: hsl(212, 100%, 50%);
-    border-radius: 12px;
-    border-width: 0px;
-    padding: 1px 15px;
-    outline: none;
-}
+        margin: 50px 35% 0 35%;
+        width: 30%;
+        height: 30px;
+        background-color: hsl(212, 100%, 50%);
+        border-radius: 12px;
+        border-width: 0px;
+        padding: 1px 15px;
+        outline: none;
+    }
 
 #showPwBtn{
     height: 30px;

@@ -5,7 +5,8 @@ import mainlist from './components/Viewer/mainlist.vue';
 import PwIntegration from './components/Element-Integrations/PwIntegration.vue';
 import NoteIntegration from './components/Element-Integrations/NoteIntegration.vue';
 import ContactIntegration from './components/Element-Integrations/ContactIntegration.vue';
-import { registerRuntimeCompiler } from 'vue';
+import PwGen from './components/PwGen.vue';
+import Settings from './components/Settings.vue';
 
 export default {
   data() {
@@ -23,6 +24,8 @@ export default {
       noteList: [],
 
       contactList: [],
+
+      listSearchText: "",
     }
   },
   components: {
@@ -31,7 +34,9 @@ export default {
     mainlist,
     PwIntegration,
     NoteIntegration,
-    ContactIntegration
+    ContactIntegration,
+    PwGen,
+    Settings
   },
   watch: {
     key() {
@@ -105,6 +110,10 @@ export default {
         }
             
     },
+
+    DrawerClickElement(e){
+      this.window = e;
+    }
   }
 }
 </script>
@@ -116,8 +125,8 @@ export default {
   </div>
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
-    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" :curPanel=drawerPanel ></drawer>
-    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :pwList=pwList :noteList=noteList :contactList=contactList ></mainlist>
+    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" @passClick="(mode) => DrawerClickElement(mode)" @searchText="(text) => listSearchText = text"  :curPanel=drawerPanel ></drawer>
+    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :pwList=pwList :noteList=noteList :contactList=contactList :searchText=listSearchText></mainlist>
   </div>
 
   <div id="pwInteractionContainer" v-if="window === 'password'" class="mainContainer elementContainer">
@@ -132,8 +141,12 @@ export default {
       <ContactIntegration @callback="(el) => this.handleElementCallback(el)" :element=handlerObj> </ContactIntegration>
   </div>
 
-  <div id="settingsContainer" v-if="window === 'view'" class="mainContainer">
+  <div id="pwGenContainer" v-if="window === 'pwGen'" class="mainContainer">
+    <PwGen @changeWindow="(_handlerObj) => this.HandleHandlerObj(_handlerObj)"></PwGen>
+  </div>
 
+  <div id="settingsContainer" v-if="window === 'settings'" class="mainContainer">
+    <Settings></Settings>
   </div>
 
   <div style=" position: absolute; bottom: 0px; left: 10px;" class="unselectable">
@@ -170,6 +183,23 @@ export default {
     width: 22%;
     min-height: 500px;
     height: 65%;
+  }
+
+  #settingsContainer{
+    min-width: 1000px;
+    width: 65%;
+    min-height: 500px;
+    height: 70%;
+    display: flex;
+  }
+
+  #pwGenContainer{
+    min-width: 500px;
+    width: 20%;
+    min-height: 400px;
+    height: 40%;
+    max-height: 300px;
+    display: flex;
   }
 
 </style>

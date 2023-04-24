@@ -10,7 +10,8 @@ export default {
         ],
         folders: [
             "none", "gaming",
-        ]
+        ],
+        searchText: "",
       }
    },
    props: {
@@ -29,6 +30,12 @@ export default {
     selectPanel(panel){
         this.$emit('currentPanel', panel.name);
         this.currentPanel = panel.name;
+    },
+    DrawerClick(e){
+        this.$emit('passClick', e);
+    },
+    sendSearchText(){
+        this.$emit('searchText', this.searchText);
     }
    }
 }
@@ -38,7 +45,7 @@ export default {
     <div id="drawerContainer">
 
         <div id="searchBox">
-            <input type="text" placeholder="Search..">
+            <input type="text" @input="sendSearchText()" v-model="searchText" placeholder="Search..">
         </div>
     
         <div id="drawerPanels">
@@ -62,8 +69,8 @@ export default {
         <div id="navfooter"> 
             <div class="spacerLine"> </div>
             <div id="navfooterContainer"> 
-                <img src="../../assets/icons/add.png">
-                <img src="../../assets/icons/setting.png">
+                <img src="../../assets/icons/add.png" @click="DrawerClick('pwGen')">
+                <img src="../../assets/icons/setting.png" @click="DrawerClick('settings')">
             </div>
         </div>
 

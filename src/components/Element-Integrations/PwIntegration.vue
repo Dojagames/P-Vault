@@ -30,6 +30,10 @@ export default {
                     this.elementWeb = this.element.web;
                     this.elementFolder = this.element.folder;
                 }
+
+                if(this.element.mode === "add" && this.element.pw != "" && this.element.pw != undefined){
+                    this.elementPw = this.element.pw;
+                }
             },
             immediate: true
         }
