@@ -70,7 +70,7 @@ export default {
             });
         },
         genPw(){
-            this.elementPw = GeneratePassword(16);
+            this.elementPw = GeneratePassword();
         }
     }
 }

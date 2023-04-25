@@ -23,7 +23,16 @@ export default {
     },
     methods: {
         LaunchWebsite(url) {
-            window.open(url, '_blank').focus();
+            if(url.substring(0,4) == "http" || url.substring(0,5) == "https"){
+                window.open(url, '_blank').focus();
+            } else {
+                window.open("http://"+ url, '_blank').focus();
+            }
+           
+        },
+
+        getFavivon(_url){
+            return GetFaviconLink(_url);
         },
 
         async CopyToClipboard(text) {
@@ -137,7 +146,7 @@ export default {
 
             <div v-else v-for="pw in this.filteredPws" class="listElement">
 
-                <img src="../../assets/icons/test.png">
+                <img :src="getFavivon(pw.web)">
                 <div class="textTitle" @click="LaunchElement(pw)">
                     <p>{{pw.web}}</p>
                     <p><small>{{pw.name}}</small></p>

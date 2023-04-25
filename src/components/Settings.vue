@@ -3,7 +3,11 @@ export default {
 
     data(){
         return {
-            
+            pwLength: GetSettingPwLenght(),
+            lowerCase: GetSettingLower(),
+            upperCase: GetSettingUpper(),
+            numbers: GetSettingNumber(),
+            symbols : GetSettingSymbol()
         }
     },
     components: {
@@ -14,7 +18,21 @@ export default {
     },
     methods: {
         GoBack(){
-            this.$emit("handler", "main")
+            this.$emit("handler", "");
+        },
+        ChangeSettings(){
+            if(isNaN(this.pwLength) || this.pwLength == ""){
+                alert("Number has to be a number");
+                return;
+            }
+            SetSettingPwLenght(this.pwLength);
+            SetSettingLower(this.lowerCase);
+            SetSettingUpper(this.upperCase);
+            SetSettingNumber(this.numbers);
+            SetSettingSymbol(this.symbols);
+
+            SaveSettings();
+            this.$emit("handler", "");
         }
     },
     created() {
@@ -41,16 +59,16 @@ export default {
                 <div class="settingWrapper"><input type="checkbox" v-model="symbols"><p>Symbols</p></div>
             </div>
             <div id="lengthBox">
-                <input type="number" id="lenghtInput" v-model="length">
+                <input type="number" id="lenghtInput" v-model="pwLength">
                 <p>length</p>
             </div>
         </div>
         <div id="ChangePwElement" class="settingElement">
-            <h1>ChangePw</h1>
+            <h1>Change Password</h1>
         </div>
 
         <div id="exitWrapper">
-            <button id="saveBtn">Save</button>
+            <button id="saveBtn" @click="ChangeSettings()">Save</button>
             <button id="exitBtn" @click="GoBack()">Exit</button>
         </div>
     </div>

@@ -41,6 +41,9 @@ export default {
   watch: {
     key() {
       this.window = "main";
+
+      LoadSettings();
+
       this.pwList = LoadPw(this.key);
       this.noteList = LoadNotes(this.key);
       this.contactList = LoadContacts(this.key);

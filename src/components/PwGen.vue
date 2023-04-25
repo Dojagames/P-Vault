@@ -3,11 +3,11 @@ export default {
 
     data(){
         return {
-            lowerCase: true,
-            upperCase: true,
-            numbers: true,
-            symbols: true,
-            length: 12,
+            lowerCase: GetSettingLower(),
+            upperCase: GetSettingUpper(),
+            numbers: GetSettingNumber(),
+            symbols: GetSettingSymbol(),
+            length: GetSettingPwLenght(),
             createdPw: "",
         }
     },

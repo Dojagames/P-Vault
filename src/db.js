@@ -138,3 +138,35 @@ function GetSessionCookie(){
     var _temp = sessionStorage.getItem("sessionCookie");
     return (DecryptMsg (_temp, "J58yS7q3"));
 }
+
+function SaveSettings(){
+    var temp = {
+        pwLength: GetSettingPwLenght(), 
+        lower: GetSettingLower(),
+        upper: GetSettingUpper(),
+        numbers: GetSettingNumber(),
+        symbols: GetSettingSymbol()
+    }
+
+    localStorage.setItem("settings",  JSON.stringify(temp));
+}
+
+function LoadSettings(){
+    var _temp = JSON.parse(localStorage.getItem("settings"));
+    if(_temp == null) return;
+    SetSettingPwLenght(_temp.pwLength);
+    SetSettingLower(_temp.lower);
+    SetSettingUpper(_temp.upper);
+    SetSettingNumber(_temp.numbers);
+    SetSettingSymbol(_temp.symbols);
+}
+
+function GetFaviconLink(url){
+
+    if(url.substring(0,4) == "http" || url.substring(0,5) == "https"){
+        return new URL(url).host + "/favicon.ico";
+    } else {
+        alert("https://" + new URL("http://"+ url).host + "/favicon.ico");
+        return "https://" + new URL("http://"+ url).host + "/favicon.ico";
+    }
+}
