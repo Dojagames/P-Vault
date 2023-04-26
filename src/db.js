@@ -160,13 +160,3 @@ function LoadSettings(){
     SetSettingNumber(_temp.numbers);
     SetSettingSymbol(_temp.symbols);
 }
-
-function GetFaviconLink(url){
-
-    if(url.substring(0,4) == "http" || url.substring(0,5) == "https"){
-        return new URL(url).host + "/favicon.ico";
-    } else {
-        alert("https://" + new URL("http://"+ url).host + "/favicon.ico");
-        return "https://" + new URL("http://"+ url).host + "/favicon.ico";
-    }
-}

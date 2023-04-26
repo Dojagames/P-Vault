@@ -2,7 +2,7 @@
 export default {
     data() {
         return {
-           
+
         }
     },
     props: {
@@ -43,11 +43,13 @@ export default {
             this.$emit('handlerObj', Object.assign({}, e, {mode: "del"}));
         },
 
-        LaunchElement(e){       
+        LaunchElement(e){    
+            e.isHovering = false;   
             this.$emit('handlerObj', Object.assign({}, e, {mode: "view", id: this.GetId(e)}));
         },
         
         EditElement(e){
+            e.isHovering = false;
             this.$emit('handlerObj', Object.assign({}, e, {mode: "edit", id: this.GetId(e)}));
         },
 
@@ -118,33 +120,33 @@ export default {
         </div>
 
         <div id="listContainer">
-            <div v-if="this.curPanel == 'Notes'" v-for="note in this.filteredNotes" class="listElement">
+            <div v-if="this.curPanel == 'Notes'" v-for="note in this.filteredNotes" class="listElement" @mouseover="note.isHovering = true" @mouseout="note.isHovering = false">
 
                 <img src="../../assets/icons/test.png">
                 <div class="textTitle" @click="LaunchElement(note);">
                     <h4>{{note.name}}</h4>
                 </div>
-                <div class="listNavbar">
+                <div class="listNavbar" :style="note.isHovering ? 'display: block' : 'display: none' ">
                     <img src="../../assets/icons/edit.png" @click="EditElement(note)">
                     <img src="../../assets/icons/delete.png" @click="DeleteElement(note)">
                 </div>
 
             </div>
 
-            <div v-else-if="this.curPanel == 'Contacts'" v-for="contact in this.filteredContacts" class="listElement">
+            <div v-else-if="this.curPanel == 'Contacts'" v-for="contact in this.filteredContacts" class="listElement" @mouseover="contact.isHovering = true" @mouseout="contact.isHovering = false">
 
                 <img src="../../assets/icons/test.png">
                 <div class="textTitle" @click="LaunchElement(contact)">
                     <h4>{{contact.name}}</h4>
                 </div>
-                <div class="listNavbar">  
+                <div class="listNavbar" :style="contact.isHovering ? 'display: block' : 'display: none' ">  
                     <img src="../../assets/icons/edit.png" @click="EditElement(contact)">
                     <img src="../../assets/icons/delete.png" @click="DeleteElement(contact)">
                 </div>
 
             </div>
 
-            <div v-else v-for="pw in this.filteredPws" class="listElement">
+            <div v-else v-for="pw in this.filteredPws" class="listElement" @mouseover="pw.isHovering = true" @mouseout="pw.isHovering = false">
 
                 <img :src="getFavivon(pw.web)">
                 <div class="textTitle" @click="LaunchElement(pw)">
@@ -152,7 +154,7 @@ export default {
                     <p><small>{{pw.name}}</small></p>
                 </div>
 
-                <div class="listNavbar">
+                <div class="listNavbar" :style="pw.isHovering ? 'display: block' : 'display: none' ">
                     <img src="../../assets/icons/launch.png" @click="LaunchWebsite(pw.web)">
                     <img src="../../assets/icons/copyUser.png" @click="CopyToClipboard(pw.username)">
                     <img src="../../assets/icons/CopyPw.png" @click="CopyToClipboard(pw.pw)">
@@ -259,5 +261,4 @@ export default {
     .listNavbar img:hover {
         cursor: pointer;
     }
-
 </style>
