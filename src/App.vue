@@ -13,7 +13,7 @@ export default {
     return {
       key: "",
 
-      sortingType: "timeCreated",
+      GlobalsortingType: getSortingType(),
       loginStatus: false,
       window: "login",
       drawerPanel: "Passwords",
@@ -37,7 +37,7 @@ export default {
     NoteIntegration,
     ContactIntegration,
     PwGen,
-    Settings
+    Settings,
   },
   watch: {
     key() {
@@ -49,6 +49,9 @@ export default {
       this.noteList = LoadNotes(this.key);
       this.contactList = LoadContacts(this.key);
     },
+    sortingType(){
+      this.sortPwList(this.sortingType);
+    }
   },
   mount: {
 
@@ -79,6 +82,7 @@ export default {
 
     AddElement(e){
         if(e.type === "password"){
+            this.sortPwList(this.sortingType);
             this.pwList.push(e);
         } else if(e.type === "note"){ 
             this.noteList.push(e);
@@ -88,7 +92,9 @@ export default {
     },
 
     EditElement(e){
+        //alert(e.timesUses); 
         if(e.type === "password"){
+            this.sortPwList(this.sortingType);
             this.pwList[this.pwList.findIndex(t => t.id == e.id)] = e;
         } else if (e.type === "note"){ 
             this.noteList[this.noteList.findIndex(t => t.id == e.id)] = e;
@@ -120,6 +126,26 @@ export default {
 
     changeSettings(e){
       this.window = "main"
+    },
+
+    sortPwList(_type){
+      if(_type == "alphabetical"){
+        this.pwList.sort((_obj1, _obj2) => {
+          _obj1.name.localCompare(_obj2.name);
+        })
+      } else if(_type == "timeCreated"){
+        this.pwList.sort((_obj1, _obj2) => {
+          _obj1.id - _obj2.id;
+        })
+      } else if (_type == "lastUsed"){
+        this.pwList.sort((_obj1, _obj2) => {
+          _obj1.lastUsed - _obj2.lastUsed;
+        }) 
+      } else if(_type == "timesUsed"){
+        this.pwList.sort((_obj1, _obj2) => {
+          _obj1.timesUsed - _obj2.timesUsed;
+        })
+      }
     }
   }
 }
@@ -153,7 +179,7 @@ export default {
   </div>
 
   <div id="settingsContainer" v-if="window === 'settings'" class="mainContainer">
-    <Settings @handler="(_obj) => changeSettings(_obj)" :selectedType=sortingType></Settings>
+    <Settings @handler="(_obj) => changeSettings(_obj)"></Settings>
   </div>
 
   <div style=" position: absolute; bottom: 0px; left: 10px;" class="unselectable">

@@ -9,17 +9,18 @@ export default {
             numbers: GetSettingNumber(),
             symbols : GetSettingSymbol(),
 
-            localSelectedType: "alphabetical",
+            localSelectedType: getSortingType(),
         }
     },
     components: {
         
     },
     props: {
-        selectedType: String,
+
     },
     methods: {
         GoBack(){
+            alert(this.selectedType);
             this.$emit("handler", "");
         },
         ChangeSettings(){
@@ -34,19 +35,18 @@ export default {
             SetSettingSymbol(this.symbols);
 
             SaveSettings();
-            this.$emit("handler", "");
+            saveSortingType(this.localSelectedType);
+            this.$emit("handler", {selectedType: this.localSelectedType});
         }
     },
     created() {
-        
+    
     },
     mounted(){
         
     },
     watch: {
-        selectedType(){
-            this.localSelectedType = this.selectedType;
-        }
+
     },
 
 }
@@ -75,7 +75,7 @@ export default {
         <div id="sortingType" class="settingElement">
             <h1>Sorting Type</h1>
             <select name="sortingType" id="sortingTypeSelector" v-model="localSelectedType">
-                <option value="alpabetical">alphabetical</option>
+                <option value="alphabetical">alphabetical</option>
                 <option value="timeCreated">time Created</option>
                 <option vlaue="lastUsed">last Used</option>
                 <option value="mostUsed">most used</option>

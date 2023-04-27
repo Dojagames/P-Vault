@@ -10,6 +10,10 @@ export default {
             elementWeb: "",
             elementFolder: "",
 
+
+            elementTimeCreated: 0,
+            elementLastUsed: 0,
+            elementTimesUsed: 0,
             noName: false,
             noPw: false,
         }
@@ -34,6 +38,7 @@ export default {
                 if(this.element.mode === "add" && this.element.pw != "" && this.element.pw != undefined){
                     this.elementPw = this.element.pw;
                 }
+    
             },
             immediate: true
         }
@@ -57,8 +62,16 @@ export default {
             }
 
             if(this.elementFolder == '') this.elementFolder = "none";
-            if(this.element.id == undefined || this.element.id == null){
+            if(this.element.mode === "add"){
                 this.element.id = getNewId();
+                this.elementCreated = new Date().getTime();
+                this.elementLastUsed = this.elementCreated;
+            } else {
+                if(this.element.lastUsed <= new Date().getTime() + 300000 || this.elementTimesUsed == 0){
+                    this.elementCreated = this.element.created;
+                    this.elementLastUsed = new Date().getTime();
+                    this.elementTimesUsed = this.element.timesUsed + 1;
+                }
             }
 
 
@@ -70,6 +83,9 @@ export default {
                 web: this.elementWeb,
                 folder: this.elementFolder,
                 type: this.element.type,
+                created: this.elementCreated,
+                lastUsed: this.elementLastUsed,
+                timesUsed: this.elementTimesUsed,
                 id: this.element.id, 
             });
         },
