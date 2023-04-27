@@ -57,6 +57,10 @@ export default {
             }
 
             if(this.elementFolder == '') this.elementFolder = "none";
+            if(this.element.id == undefined || this.element.id == null){
+                this.element.id = getNewId();
+            }
+
 
             this.$emit('callback', {
                 mode: this.element.mode, 

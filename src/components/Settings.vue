@@ -7,14 +7,16 @@ export default {
             lowerCase: GetSettingLower(),
             upperCase: GetSettingUpper(),
             numbers: GetSettingNumber(),
-            symbols : GetSettingSymbol()
+            symbols : GetSettingSymbol(),
+
+            localSelectedType: "alphabetical",
         }
     },
     components: {
         
     },
     props: {
-        
+        selectedType: String,
     },
     methods: {
         GoBack(){
@@ -42,7 +44,9 @@ export default {
         
     },
     watch: {
-        
+        selectedType(){
+            this.localSelectedType = this.selectedType;
+        }
     },
 
 }
@@ -63,8 +67,19 @@ export default {
                 <p>length</p>
             </div>
         </div>
+
         <div id="ChangePwElement" class="settingElement">
             <h1>Change Password</h1>
+        </div>
+
+        <div id="sortingType" class="settingElement">
+            <h1>Sorting Type</h1>
+            <select name="sortingType" id="sortingTypeSelector" v-model="localSelectedType">
+                <option value="alpabetical">alphabetical</option>
+                <option value="timeCreated">time Created</option>
+                <option vlaue="lastUsed">last Used</option>
+                <option value="mostUsed">most used</option>
+            </select>
         </div>
 
         <div id="exitWrapper">
@@ -126,6 +141,17 @@ export default {
         width: fit-content;
         left: 50%;
         transform: translateX(-50%);
+    }
+
+    #sortingType{
+        position: absolute;
+        width: 35%;
+        min-width: 167px;
+        min-height: 140px;
+        max-height: 160px;
+        height: 24%;
+        display: block;
+        top: 19 0px;
     }
 
     .settingWrapper{
@@ -193,6 +219,13 @@ export default {
     left: 10px;
     width: 60%;
     position: relative ;
+   }
 
+   #sortingTypeSelector{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 10px;
+    width: 30%;
    }
 </style>

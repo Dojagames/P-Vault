@@ -45,12 +45,12 @@ export default {
 
         LaunchElement(e){    
             e.isHovering = false;   
-            this.$emit('handlerObj', Object.assign({}, e, {mode: "view", id: this.GetId(e)}));
+            this.$emit('handlerObj', Object.assign({}, e, {mode: "view"}));
         },
         
         EditElement(e){
             e.isHovering = false;
-            this.$emit('handlerObj', Object.assign({}, e, {mode: "edit", id: this.GetId(e)}));
+            this.$emit('handlerObj', Object.assign({}, e, {mode: "edit"}));
         },
 
         AddElement(){
@@ -68,20 +68,10 @@ export default {
             };
         },
 
-        GetId(e){
-            switch (e.type) {
-                case "password": return this.pwList.indexOf(e);
-                    break;
-                case "note": return this.noteList.indexOf(e);
-                    break;
-                case "contact": return this.contactList.indexOf(e);
-            };
-        },
-
 
         RemovePassbackProperties(e){
             delete e.mode;
-            delete e.id;
+            delete e.isHovering;
             return e;
         }
     },

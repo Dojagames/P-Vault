@@ -13,6 +13,7 @@ export default {
     return {
       key: "",
 
+      sortingType: "timeCreated",
       loginStatus: false,
       window: "login",
       drawerPanel: "Passwords",
@@ -70,9 +71,9 @@ export default {
       if(e.type === "password"){
         savePw(this.pwList, this.key);
       } else if(e.type === "note"){
-        saveNotes(this.noteList,  this.key);
+        saveNotes(this.noteList, this.key);
       } else if(e.type === "contact"){
-        saveContacts(this.contactList,  this.key);
+        saveContacts(this.contactList, this.key);
       }
     },
 
@@ -88,26 +89,25 @@ export default {
 
     EditElement(e){
         if(e.type === "password"){
-            this.pwList[e.id] = e;
+            this.pwList[this.pwList.findIndex(t => t.id == e.id)] = e;
         } else if (e.type === "note"){ 
-            this.noteList[e.id] = e;
+            this.noteList[this.noteList.findIndex(t => t.id == e.id)] = e;
         } else if (e.type === "contact"){ 
-            this.contactList[e.id] = e;
+            this.contactList[this.contactList.findIndex(t => t.id == e.id)] = e;
         }
     },
 
     DeleteElement(e) {
         const response = confirm("do you want to delete: " + e.name);
         if(response){
-            delete e.mode;
             if(e.type === "password") {
-                this.pwList = this.pwList.filter((t) => JSON.stringify(t) !== JSON.stringify(e));
+                this.pwList = this.pwList.filter((t) => t.id !== e.id);
                 savePw(this.pwList, this.key);
             } else if (e.type === "note") {
-                this.noteList = this.noteList.filter(JSON.stringify(t) !== JSON.stringify(e));
+                this.noteList = this.noteList.filter((t) => t.id !== e.id);
                 saveNotes(this.noteList,  this.key);
             } else if (e.type === "contact") {
-                this.contactList = this.contactList.filter(JSON.stringify(t) !== JSON.stringify(e));
+                this.contactList = this.contactList.filter((t) => t.id !== e.id);
                 saveContacts(this.contactList,  this.key);
             }
         }
@@ -153,7 +153,7 @@ export default {
   </div>
 
   <div id="settingsContainer" v-if="window === 'settings'" class="mainContainer">
-    <Settings @handler="(_obj) => changeSettings(_obj)"></Settings>
+    <Settings @handler="(_obj) => changeSettings(_obj)" :selectedType=sortingType></Settings>
   </div>
 
   <div style=" position: absolute; bottom: 0px; left: 10px;" class="unselectable">

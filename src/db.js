@@ -13,6 +13,7 @@ function savePw(_list, _key){
             c: EncryptMsg (e.pw, _key),
             d: EncryptMsg (e.web, _key),
             e: EncryptMsg (e.folder, _key),
+            f: EncryptMsg (String(e.id), _key),
         } 
         _arr.push(_obj);
     });
@@ -27,6 +28,7 @@ function saveNotes(_list, _key){
             a: EncryptMsg (e.name, _key),
             b: EncryptMsg (e.note, _key),
             c: EncryptMsg (e.folder, _key),
+            d: EncryptMsg (String(e.id), _key),
         } 
         _arr.push(_obj);
     });
@@ -44,6 +46,7 @@ function saveContacts(_list, _key){
             d: EncryptMsg (e.bday, _key),
             e: EncryptMsg (e.street, _key),
             f: EncryptMsg (e.city, _key),
+            g: EncryptMsg (String(e.id), _key),
         } 
         _arr.push(_obj);
     });
@@ -68,6 +71,7 @@ function LoadPw(_key){
             pw: DecryptMsg (e.c, _key),
             web: DecryptMsg (e.d, _key),
             folder: DecryptMsg (e.e, _key),
+            id: DecryptMsg (e.f, _key),
             type: "password"
         } 
         _arr.push(_obj);
@@ -84,6 +88,7 @@ function LoadNotes(_key){
             name: DecryptMsg (e.a, _key),
             note: DecryptMsg (e.b, _key),
             folder: DecryptMsg (e.c, _key),
+            id: DecryptMsg (e.d, _key),
             type: "note"
         } 
         _arr.push(_obj);
@@ -103,6 +108,7 @@ function LoadContacts(_key){
             bday: DecryptMsg (e.d, _key),
             street: DecryptMsg (e.e, _key),
             city: DecryptMsg (e.f, _key),
+            id: DecryptMsg (e.g, _key),
             type: "contact"
         } 
         _arr.push(_obj);
@@ -159,4 +165,14 @@ function LoadSettings(){
     SetSettingUpper(_temp.upper);
     SetSettingNumber(_temp.numbers);
     SetSettingSymbol(_temp.symbols);
+}
+
+function getCurrentId(){
+    var _temp = JSON.parse(localStorage.getItem("id"));
+    if(_temp == null) return 0;
+    return _temp;
+}
+
+function saveCurrentId(_id){
+    localStorage.setItem("id", JSON.stringify(_id + 1));
 }

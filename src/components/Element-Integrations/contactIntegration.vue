@@ -8,7 +8,6 @@ export default {
             elementBday: "",
             elementStreet: "",
             elementCity: "",
-
             noName: false,
         }
     },
@@ -29,6 +28,8 @@ export default {
                     this.elementStreet = this.element.street;
                     this.elementCity = this.element.city;
                 }
+
+                
             },
             immediate: true
         }
@@ -49,6 +50,9 @@ export default {
             }
 
             if(this.elementFolder == '') this.elementFolder = "none";
+            if(this.element.id == undefined || this.element.id == null){
+                this.element.id = getNewId();
+            }
 
             this.$emit('callback', {
                 mode: this.element.mode, 
