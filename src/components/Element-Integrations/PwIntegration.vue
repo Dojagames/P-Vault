@@ -67,10 +67,12 @@ export default {
                 this.elementCreated = new Date().getTime();
                 this.elementLastUsed = this.elementCreated;
             } else {
-                if(this.element.lastUsed <= new Date().getTime() + 300000 || this.elementTimesUsed == 0){
+                if(this.element.lastUsed <= new Date().getTime()){
                     this.elementCreated = this.element.created;
                     this.elementLastUsed = new Date().getTime();
-                    this.elementTimesUsed = this.element.timesUsed + 1;
+                    if(this.elementLastUsed <= new Date().getTime() + 30000 || this.element.timesUsed == 0){
+                        this.elementTimesUsed = this.element.timesUsed + 1;
+                    }
                 }
             }
 

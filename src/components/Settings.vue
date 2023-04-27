@@ -20,8 +20,7 @@ export default {
     },
     methods: {
         GoBack(){
-            alert(this.selectedType);
-            this.$emit("handler", "");
+            this.$emit("handler", {selectedType: "cancel"});
         },
         ChangeSettings(){
             if(isNaN(this.pwLength) || this.pwLength == ""){
@@ -35,7 +34,7 @@ export default {
             SetSettingSymbol(this.symbols);
 
             SaveSettings();
-            saveSortingType(this.localSelectedType);
+            SaveSortingType(this.localSelectedType);
             this.$emit("handler", {selectedType: this.localSelectedType});
         }
     },
@@ -77,7 +76,7 @@ export default {
             <select name="sortingType" id="sortingTypeSelector" v-model="localSelectedType">
                 <option value="alphabetical">alphabetical</option>
                 <option value="timeCreated">time Created</option>
-                <option vlaue="lastUsed">last Used</option>
+                <option value="lastUsed">last Used</option>
                 <option value="mostUsed">most used</option>
             </select>
         </div>

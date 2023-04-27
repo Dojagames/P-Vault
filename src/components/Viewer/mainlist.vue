@@ -16,7 +16,7 @@ export default {
         
     },
     watch: {
-
+       
     },
     mount: {
         
@@ -73,7 +73,7 @@ export default {
             delete e.mode;
             delete e.isHovering;
             return e;
-        }
+        },
     },
     computed: {
         filteredPws(){
@@ -136,7 +136,7 @@ export default {
 
             </div>
 
-            <div v-else v-for="pw in this.filteredPws" class="listElement" @mouseover="pw.isHovering = true" @mouseout="pw.isHovering = false">
+            <div v-else-if="this.curPanel == 'Passwords'" v-for="pw in this.filteredPws" class="listElement" @mouseover="pw.isHovering = true" @mouseout="pw.isHovering = false">
 
                 <img :src="getFavivon(pw.web)">
                 <div class="textTitle" @click="LaunchElement(pw)">

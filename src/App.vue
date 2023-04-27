@@ -49,8 +49,49 @@ export default {
       this.noteList = LoadNotes(this.key);
       this.contactList = LoadContacts(this.key);
     },
-    sortingType(){
-      this.sortPwList(this.sortingType);
+  },
+  computed: {
+    filteredPws(){
+      if(this.GlobalsortingType == "alphabetical"){
+        return this.pwList.sort(function(a, b){
+          var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+          if (nameA < nameB)
+            return -1;
+          if (nameA > nameB)
+            return 1;
+          return 0; 
+          });
+      } else if(this.GlobalsortingType == "timeCreated"){
+        return this.pwList.sort(function(a, b){
+          var idA = a.id, idB = b.id;
+          if (idA < idB) //sort string ascending
+            return -1;
+          if (idA > idB)
+            return 1;
+          return 0; //default return value (no sorting)
+          });
+      } else if (this.GlobalsortingType == "lastUsed"){
+        return this.pwList.sort(function(a, b){
+          var luA = a.lastUsed, luB = b.lastUsed;
+          if (luA < luB)
+            return 1;
+          if (luA > luB)
+            return -1;
+          return 0;
+          });
+      } else if(this.GlobalsortingType == "mostUsed"){
+        return this.pwList.sort(function(a, b){
+          var TuA = a.timesUsed, TuB = b.timesUsed;
+          if (TuA < TuB)
+            return -1;
+          if (TuA > TuB)
+            return 1;
+          return 0;
+          });
+      } else {
+        alert("default + " + this.GlobalsortingType)
+        return this.pwList
+      }
     }
   },
   mount: {
@@ -82,7 +123,6 @@ export default {
 
     AddElement(e){
         if(e.type === "password"){
-            this.sortPwList(this.sortingType);
             this.pwList.push(e);
         } else if(e.type === "note"){ 
             this.noteList.push(e);
@@ -94,7 +134,6 @@ export default {
     EditElement(e){
         //alert(e.timesUses); 
         if(e.type === "password"){
-            this.sortPwList(this.sortingType);
             this.pwList[this.pwList.findIndex(t => t.id == e.id)] = e;
         } else if (e.type === "note"){ 
             this.noteList[this.noteList.findIndex(t => t.id == e.id)] = e;
@@ -126,27 +165,10 @@ export default {
 
     changeSettings(e){
       this.window = "main"
+      if(e.selectedType === "cancel") return;
+      this.GlobalsortingType = e.selectedType;
     },
 
-    sortPwList(_type){
-      if(_type == "alphabetical"){
-        this.pwList.sort((_obj1, _obj2) => {
-          _obj1.name.localCompare(_obj2.name);
-        })
-      } else if(_type == "timeCreated"){
-        this.pwList.sort((_obj1, _obj2) => {
-          _obj1.id - _obj2.id;
-        })
-      } else if (_type == "lastUsed"){
-        this.pwList.sort((_obj1, _obj2) => {
-          _obj1.lastUsed - _obj2.lastUsed;
-        }) 
-      } else if(_type == "timesUsed"){
-        this.pwList.sort((_obj1, _obj2) => {
-          _obj1.timesUsed - _obj2.timesUsed;
-        })
-      }
-    }
   }
 }
 </script>
@@ -159,7 +181,7 @@ export default {
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
     <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" @passClick="(mode) => DrawerClickElement(mode)" @searchText="(text) => listSearchText = text"  :curPanel=drawerPanel ></drawer>
-    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :pwList=pwList :noteList=noteList :contactList=contactList :searchText=listSearchText></mainlist>
+    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :pwList=filteredPws :noteList=noteList :contactList=contactList :searchText=listSearchText></mainlist>
   </div>
 
   <div id="pwInteractionContainer" v-if="window === 'password'" class="mainContainer elementContainer">
