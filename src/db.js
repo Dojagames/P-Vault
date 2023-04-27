@@ -14,6 +14,9 @@ function savePw(_list, _key){
             d: EncryptMsg (e.web, _key),
             e: EncryptMsg (e.folder, _key),
             f: EncryptMsg (String(e.id), _key),
+            g: EncryptMsg (String(e.created), _key),
+            h: EncryptMsg (String(e.lastUsed), _key),
+            i: EncryptMsg (String(e.timesUsed), _key),
         } 
         _arr.push(_obj);
     });
@@ -72,6 +75,9 @@ function LoadPw(_key){
             web: DecryptMsg (e.d, _key),
             folder: DecryptMsg (e.e, _key),
             id: DecryptMsg (e.f, _key),
+            created: DecryptMsg (e.g, _key),
+            lastUsed: DecryptMsg (e.h, _key),
+            timesUsed: parseInt(DecryptMsg (e.i, _key)),
             type: "password"
         } 
         _arr.push(_obj);
@@ -175,4 +181,14 @@ function getCurrentId(){
 
 function saveCurrentId(_id){
     localStorage.setItem("id", JSON.stringify(_id + 1));
+}
+
+function SaveSortingType(_type){
+    localStorage.setItem("sortingType", JSON.stringify(_type));
+}
+
+function getSortingType(){
+    var _temp = JSON.parse(localStorage.getItem("sortingType"));
+    if(_temp == null) return "lastUsed";
+    return _temp;
 }
