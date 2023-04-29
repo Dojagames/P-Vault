@@ -6,7 +6,7 @@ function GetFaviconLink(url){
         try{
             return "http://" + new URL("http://"+ url).host + "/favicon.ico";
         } catch {
-            return "";
+            return "../src/assets/icons/question.png";
         }
         
     }

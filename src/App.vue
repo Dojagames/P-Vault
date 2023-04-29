@@ -17,6 +17,7 @@ export default {
       loginStatus: false,
       window: "login",
       drawerPanel: "Passwords",
+      selectedFolder: "",
       handlerObj: {},
       element: {type: "cancel"},
 
@@ -91,6 +92,13 @@ export default {
       } else {
         alert("default + " + this.GlobalsortingType)
         return this.pwList
+      }
+    },
+    folderFilteredPws(){
+      if(this.selectedFolder == "") {
+        return this.filteredPws;
+      } else {
+        return this.filteredPws.filter((t) => t.folder == this.selectedFolder);
       }
     }
   },
@@ -169,6 +177,46 @@ export default {
       this.GlobalsortingType = e.selectedType;
     },
 
+    handleSettingsList(e){
+      e.list.forEach(element => {
+        let _temp = JSON.parse(JSON.stringify(element)); 
+        
+          if(_temp.password == undefined || _temp.password == "") return;
+          if(_temp.name == undefined || _temp.name == "" || _temp.name == null){
+            if (_temp.url != undefined && _temp.url != "" && _temp != null){
+              _temp.name = _temp.url;
+            } else return;
+          }
+
+          if(_temp.username == undefined) _temp.username = "";
+          if(_temp.folder == undefined) _temp.folder = "none";
+
+          if(_temp.timeCreated == undefined) _temp.timeCreated = new Date().getTime();
+          if(_temp.timeLastUsed == undefined) _temp.timeLastUsed = new Date().getTime();
+          
+
+          if(e.ignoreDups){
+            if(this.pwList.some((t) => t.username == _temp.username && t.pw == _temp.password && t.web == _temp.url))return
+          } 
+
+          this.AddElement({ 
+            name: _temp.name, 
+              username: _temp.username, 
+              pw: _temp.password, 
+              web: _temp.url, 
+              folder: _temp.folder, 
+              id: getNewId(), 
+              created: _temp.timeCreated, 
+              lastUsed: _temp.timeLastUsed, 
+              timesUsed: 0,
+              type: "password"
+            });
+            
+      });
+
+      savePw(this.pwList, this.key);
+    }
+
   }
 }
 </script>
@@ -180,8 +228,8 @@ export default {
   </div>
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
-    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" @passClick="(mode) => DrawerClickElement(mode)" @searchText="(text) => listSearchText = text"  :curPanel=drawerPanel ></drawer>
-    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :pwList=filteredPws :noteList=noteList :contactList=contactList :searchText=listSearchText></mainlist>
+    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" @passClick="(mode) => DrawerClickElement(mode)" @searchText="(text) => listSearchText = text" @folderSelect="(_folder) => selectedFolder = _folder"  :curPanel=drawerPanel :folders="[none, gaming]"></drawer>
+    <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :pwList=folderFilteredPws :noteList=noteList :contactList=contactList :searchText=listSearchText></mainlist>
   </div>
 
   <div id="pwInteractionContainer" v-if="window === 'password'" class="mainContainer elementContainer">
@@ -201,7 +249,7 @@ export default {
   </div>
 
   <div id="settingsContainer" v-if="window === 'settings'" class="mainContainer">
-    <Settings @handler="(_obj) => changeSettings(_obj)"></Settings>
+    <Settings @handler="(_obj) => changeSettings(_obj)" @listHandler="(_obj) => handleSettingsList(_obj)"></Settings>
   </div>
 
   <div style=" position: absolute; bottom: 0px; left: 10px;" class="unselectable">

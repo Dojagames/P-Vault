@@ -3,19 +3,18 @@ export default {
    data() {
       return {
         currentPanel: "Passwords",
+        selectedFolderIndex: -1,
         panels: [
             {name: "Passwords", imgSrc: "../../src/assets/icons/password.png"},
             {name: "Notes", imgSrc: "../../src/assets/icons/document.png"},
             {name: "Contacts", imgSrc: "../../src/assets/icons/contact-book.png"}
-        ],
-        folders: [
-            "none", "gaming",
         ],
         searchText: "",
       }
    },
    props: {
     curPanel: String,
+    folders: Array,
    },
    components: {
    
@@ -34,8 +33,19 @@ export default {
     DrawerClick(e){
         this.$emit('passClick', e);
     },
-    sendSearchText(){
+    SendSearchText(){
         this.$emit('searchText', this.searchText);
+    },
+    SelectFolder(_i){
+        if(_i == this.selectedFolderIndex) {
+            this.$emit('folderSelect', "");
+            this.selectedFolderIndex = -1;} 
+        else{
+            this.selectedFolderIndex = _i;
+            this.$emit('folderSelect', this.folders[_i]);
+        }
+
+
     }
    }
 }
@@ -45,7 +55,7 @@ export default {
     <div id="drawerContainer">
 
         <div id="searchBox">
-            <input type="text" @input="sendSearchText()" v-model="searchText" placeholder="Search..">
+            <input type="text" @input="SendSearchText()" v-model="searchText" placeholder="Search..">
         </div>
     
         <div id="drawerPanels">
@@ -61,8 +71,8 @@ export default {
             <div id="folderHeader" class="unselectable"> 
                 <p>Folder</p>
             </div>
-            <div class="folderElement unselectable" v-for="folder in this.folders">
-                <p>{{folder}}</p>
+            <div class="folderElement unselectable" v-for="(folder, index) in this.folders">
+                <p @click="SelectFolder(index)" :class="(index == this.selectedFolderIndex)?'selectedFolder':'unselectedFolder'">{{folder}}</p>
             </div>
         </div>
 
@@ -183,5 +193,9 @@ export default {
 
     .selected{
         background-color: hsla(0, 0%, 100%, 0.24);
+    }
+
+    .selectedFolder{
+        color: hsl(216, 89%, 57%);
     }
 </style>

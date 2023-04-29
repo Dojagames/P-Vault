@@ -9,6 +9,14 @@ export default {
             numbers: GetSettingNumber(),
             symbols : GetSettingSymbol(),
 
+            newPws: true,
+            newNotes: false,
+            newContacts: false,
+            newIgnoreDups: true,
+
+            fileinput: "",
+            PwList: [],   
+
             localSelectedType: getSortingType(),
         }
     },
@@ -35,8 +43,55 @@ export default {
 
             SaveSettings();
             SaveSortingType(this.localSelectedType);
+            this.$emit("listHandler", {ignoreDups: this.newIgnoreDups, list: this.PwList});
             this.$emit("handler", {selectedType: this.localSelectedType});
-        }
+        },
+
+
+
+        HandleCsv(e){
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length) return;
+            this.createInput(files[0]);
+        }, 
+
+        createInput(file) {
+        let promise = new Promise((resolve, reject) => {
+          var reader = new FileReader();
+          var vm = this;
+          reader.onload = e => {
+            resolve((vm.fileinput = reader.result));
+          };
+          reader.readAsText(file);
+        });
+
+        promise.then(
+          result => {
+            /* handle a successful result */
+            this.PwList = this.csvToArray(this.fileinput.replaceAll('"', ''));
+          },
+          error => {
+            /* handle an error */ 
+            console.log(error);
+          }
+        );
+      },
+
+      csvToArray(str, delimiter = ",") {
+        const headers = str.slice(0, str.indexOf("\n")).replace( /\s/g, '').split(delimiter);
+        const rows = str.slice(str.indexOf("\n") + 1).split("\n");
+        const arr = rows.map(function (row) {
+          const values = row.split(delimiter);
+          const el = headers.reduce(function (object, header, index) {
+            object[header] = values[index];
+            return JSON.parse(JSON.stringify(object));
+          }, {});
+          return JSON.parse(JSON.stringify(el));
+        });
+
+        // return the array
+        return JSON.parse(JSON.stringify(arr));
+      },
     },
     created() {
     
@@ -55,7 +110,7 @@ export default {
     <div id="container">
         <div id="PwElement" class="settingElement">
             <h1>Password Generator Preset</h1>
-            <div id="settingsBox">
+            <div class="settingsBox">
                 <div class="settingWrapper"><input type="checkbox" v-model="lowerCase"><p>Lowercase</p></div>
                 <div class="settingWrapper"><input type="checkbox" v-model="upperCase"><p>Uppercase</p></div>
                 <div class="settingWrapper"><input type="checkbox" v-model="numbers"><p>Numbers</p></div>
@@ -81,6 +136,14 @@ export default {
             </select>
         </div>
 
+        <div id="pwInput" class="settingElement">
+            <h1>Import Passwords</h1>
+            <div class="settingsBox">
+                <div class="settingWrapper"><input type="checkbox" v-model="newIgnoreDups"><p>Ignore Duplicates</p></div>
+            </div>
+            <input type="file" id="csvFile" accept=".csv" @change="HandleCsv"/>
+        </div>
+
         <div id="exitWrapper">
             <button id="saveBtn" @click="ChangeSettings()">Save</button>
             <button id="exitBtn" @click="GoBack()">Exit</button>
@@ -94,14 +157,26 @@ export default {
         width: 100%;
         height: 100%;
         border-radius: 12px;
-        flex-direction: column;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: start;
         position: relative;
+        justify-content: space-around;
+        flex-shrink: 1;
     }
 
     .settingElement{
         border: 1px solid white;
-        margin: 10px;
+        margin: 50px 0;
         padding: 5px;
+
+        position: relative;
+        width: 40%;
+        min-width: 200px;
+        min-height: 140px;
+        max-height: 160px;
+        height: 24%;
+        display: block;
     }
 
     h1{
@@ -122,37 +197,14 @@ export default {
         color: white;
     }
 
-    #PwElement{
-       
-        position: relative;
-        width: 35%;
-        min-width: 167px;
-        min-height: 140px;
-        max-height: 160px;
-        height: 24%;
-        display: block;
-    }
-
-
-    #settingsBox{
+    .settingsBox{
         display: flex;
         position: relative;
         width: fit-content;
         left: 50%;
         transform: translateX(-50%);
     }
-
-    #sortingType{
-        position: absolute;
-        width: 35%;
-        min-width: 167px;
-        min-height: 140px;
-        max-height: 160px;
-        height: 24%;
-        display: block;
-        top: 19 0px;
-    }
-
+ 
     .settingWrapper{
         margin: 5px;
         display: flex;;
@@ -188,18 +240,6 @@ export default {
         transform: translateX(-50%);
     }
 
-
-
-    #ChangePwElement{
-        width: 60%;
-        min-height: 140px;
-        max-height: 160px;
-        height: 24%;
-        position: absolute;
-        right: 0;
-        top: 0;
-   }
-
    #exitWrapper{
     position: absolute;
     bottom: 10px;
@@ -226,5 +266,12 @@ export default {
     transform: translateX(-50%);
     margin: 10px;
     width: 30%;
+   }
+
+   #csvFile{
+    margin-top: 5px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
    }
 </style>
