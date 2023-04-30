@@ -17,14 +17,14 @@ export default {
             fileinput: "",
             PwList: [],   
 
-            localSelectedType: getSortingType(),
+            localSelectedType: this.givenSelectedType,
         }
     },
     components: {
         
     },
     props: {
-
+        givenSelectedType: String
     },
     methods: {
         GoBack(){
@@ -100,7 +100,9 @@ export default {
         
     },
     watch: {
-
+        givenSelectedType(){
+            this.localSelectedType = this.givenSelectedType;
+        }
     },
 
 }

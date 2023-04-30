@@ -17,6 +17,7 @@ export default {
       loginStatus: false,
       window: "login",
       drawerPanel: "Passwords",
+      folders: [],
       selectedFolder: "",
       handlerObj: {},
       element: {type: "cancel"},
@@ -49,6 +50,8 @@ export default {
       this.pwList = LoadPw(this.key);
       this.noteList = LoadNotes(this.key);
       this.contactList = LoadContacts(this.key);
+
+      this.folders = this.GetFolders()
     },
   },
   computed: {
@@ -137,6 +140,8 @@ export default {
         } else if(e.type === "contact"){ 
             this.contactList.push(e);
         }
+
+        this.CheckForFolder(e.folder);
     },
 
     EditElement(e){
@@ -148,6 +153,8 @@ export default {
         } else if (e.type === "contact"){ 
             this.contactList[this.contactList.findIndex(t => t.id == e.id)] = e;
         }
+
+        this.CheckForFolder(e.folder);
     },
 
     DeleteElement(e) {
@@ -215,8 +222,31 @@ export default {
       });
 
       savePw(this.pwList, this.key);
-    }
+    },
 
+    CheckForFolder(_folder){
+      if(this.folders.includes(_folder)){
+        return;
+      }
+      this.folders.push(_folder);
+    },
+
+    GetFolders(){
+      var _temp = [];
+      this.pwList.forEach(e => {
+        if(!_temp.includes(e.folder)){
+          _temp.push(e.folder);
+        }
+      });
+
+      this.noteList.forEach(e => {
+        if(!_temp.includes(e.folder)){
+          _temp.push(e.folder);
+        }
+      });
+
+      return _temp;
+    }
   }
 }
 </script>
@@ -228,7 +258,7 @@ export default {
   </div>
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
-    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" @passClick="(mode) => DrawerClickElement(mode)" @searchText="(text) => listSearchText = text" @folderSelect="(_folder) => selectedFolder = _folder"  :curPanel=drawerPanel :folders="[none, gaming]"></drawer>
+    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" @passClick="(mode) => DrawerClickElement(mode)" @searchText="(text) => listSearchText = text" @folderSelect="(_folder) => selectedFolder = _folder"  :curPanel=drawerPanel :folders="folders"></drawer>
     <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :pwList=folderFilteredPws :noteList=noteList :contactList=contactList :searchText=listSearchText></mainlist>
   </div>
 
@@ -249,7 +279,7 @@ export default {
   </div>
 
   <div id="settingsContainer" v-if="window === 'settings'" class="mainContainer">
-    <Settings @handler="(_obj) => changeSettings(_obj)" @listHandler="(_obj) => handleSettingsList(_obj)"></Settings>
+    <Settings @handler="(_obj) => changeSettings(_obj)" @listHandler="(_obj) => handleSettingsList(_obj)" :givenSelectedType="GlobalsortingType"></Settings>
   </div>
 
   <div style=" position: absolute; bottom: 0px; left: 10px;" class="unselectable">

@@ -196,7 +196,17 @@ export default {
     #listContainer{
         display: flex;
         flex-direction: column;
+        height: calc(100% - 80px);
+        overflow: scroll;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
     }
+
+    #listContainer::-webkit-scrollbar {
+        display: none;
+    }
+
+    
 
     .listElement {
         display: flex;

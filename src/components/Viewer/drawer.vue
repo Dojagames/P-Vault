@@ -20,7 +20,9 @@ export default {
    
    },
    watch: {
-
+    folders(){
+        alert(this.folders)
+    }
    },
    mount: {
    
@@ -71,8 +73,10 @@ export default {
             <div id="folderHeader" class="unselectable"> 
                 <p>Folder</p>
             </div>
-            <div class="folderElement unselectable" v-for="(folder, index) in this.folders">
-                <p @click="SelectFolder(index)" :class="(index == this.selectedFolderIndex)?'selectedFolder':'unselectedFolder'">{{folder}}</p>
+            <div id="folderElementWrapper">
+                <div class="folderElement unselectable" v-for="(folder, index) in this.folders">
+                    <p @click="SelectFolder(index)" :class="(index == this.selectedFolderIndex)?'selectedFolder':'unselectedFolder'">{{folder}}</p>
+                </div>
             </div>
         </div>
 
@@ -146,9 +150,23 @@ export default {
     }
 
     #drawerFolder{
-        overflow: hidden;
+        position: relative;
+        
     }
 
+    #folderElementWrapper{
+        overflow: scroll;
+        min-height: 220px;
+        height: calc(100vh - 580px);
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    #folderElementWrapper::-webkit-scrollbar {
+        display: none;
+    }
+
+    
     #folderHeader{
     width: 100%;
     height: 30px;
