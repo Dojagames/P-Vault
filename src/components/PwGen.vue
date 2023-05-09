@@ -69,7 +69,7 @@ export default {
             <button id="copyBtn" @click="copyPw()">Copy</button>
             <button id="addBtn"  @click="AddPw()">Add new Password</button>
         </div>
-        <button id="cancelBtn" @click="goBack()">Exit</button>
+        <p id="cancelBtn" @click="goBack()">X</p>
     </div>
 </template>
 
@@ -103,13 +103,12 @@ export default {
     }
 
     button{
-        margin: 30px 0 0 0;
+        margin: 30px 10px;
         width: 50%;
         height: 35px;
         background-color: hsl(212, 100%, 50%);
         border-radius: 12px;
         border-width: 0px;
-        padding: 1px 15px;
         outline: none;
     }
 
@@ -158,7 +157,7 @@ export default {
 
     #btnWrapper{
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
     }
     
     #copyBtn{
@@ -171,10 +170,9 @@ export default {
     }
 
     #cancelBtn{
-        margin-top: 70px;
-        width: 14%;
-        margin-left: 83%;
-        background-color: hsl(0, 67%, 60%);
-        color: white;
+        position: absolute;
+        top: 0;
+        right: 20px;
+        color: hsl(0, 93%, 57%);
     }
 </style>

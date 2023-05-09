@@ -329,8 +329,7 @@ export default {
   #pwGenContainer{
     min-width: 500px;
     width: 20%;
-    min-height: 400px;
-    height: 40%;
+    height: 300px;
     max-height: 300px;
     display: flex;
   }
