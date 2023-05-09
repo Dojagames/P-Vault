@@ -305,10 +305,9 @@ export default {
   }
 
   #loginContainer{
-    min-width: 400px;
-    width: 30%;
+    width: 700px;
     min-height: 200px;
-    height: 30%;
+    height: fit-content;
   }
 
   .elementContainer{
