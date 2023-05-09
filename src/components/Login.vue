@@ -24,6 +24,8 @@
                 }
             },
             Register(){
+                this.noMatch = false;
+                this.notLongEnougth = false;
                 if(this.pwInput == this.pwInput2){
                     if(this.pwInput.length <= 11){
                         this.notLongEnougth = true;
@@ -70,7 +72,7 @@
             <div class="elementLowerTextWrapper">
                 <p v-if="wrongPw" class="warningText">Wrong Password</p>
             </div>
-            <button>Login</button>
+            <img src="../../src/assets/icons/check.png" class="pointerCursor loginBtnC" @click="checkPw">
         </form>
     </div>
     <div v-else class="container">
@@ -83,7 +85,7 @@
                 <p v-if="noMatch" class="warningText">Passwords have to match</p>
                 <p v-if="notLongEnougth" class="warningText">Password has to at least 12 Characters long</p>
             </div>
-            <button>Register</button>
+            <img src="../../src/assets/icons/check.png" class="pointerCursor registerBtnC" @click="Register">
         </form>
     </div>
         
@@ -105,10 +107,10 @@
         margin: 20px calc(10% - 15px) 0 calc(10% - 15px);
         width: 80%;
         height: 30px;
-        background-color: #222;
+        background-color: transparent;
         border-radius: 12px;
         border-width: 1px;
-        border-color: #FFF;
+        border-color: #fff;
         padding: 1px 15px;
         outline: none;
         position: relative;
@@ -116,14 +118,14 @@
     }
 
     .txtInput:focus    {
-        border-color: hsl(212, 100%, 50%);
+        border-color: hsl(123, 67%, 42%);
     }
 
     button{
-        margin: 50px 35% 0 35%;
+        margin: 30px 35% 0 35%;
         width: 30%;
         height: 30px;
-        background-color: hsl(212, 100%, 50%);
+        background-color: hsl(123, 67%, 42%);
         border-radius: 12px;
         border-width: 0px;
         padding: 1px 15px;
@@ -150,4 +152,20 @@ color: red;
     height: 18px;
     max-height: fit-content;
 }
+
+
+.loginBtnC{
+    position: absolute;
+    right: 0px;
+    top: 15px;
+    height: 46px;
+}
+
+.registerBtnC{
+    position: absolute;
+    right: 0px;
+    top: 69px;
+    height: 46px;
+}
+
 </style>
