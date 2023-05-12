@@ -14,18 +14,3 @@ function DecryptMsg (_msg, _key){
     }
     return decryptedMessage;
 }
-
-
-function DecArr(_input){
-    var _arr = [];
-    _input.forEach(e => {
-        var _temp = [];
-        e.forEach(f => {
-            _temp.push(DecryptMsg(f));
-        });
-        _arr.push(_temp);
-    });
-
-    return _arr;
-}
-

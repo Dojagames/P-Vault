@@ -31,7 +31,7 @@ export default {
            
         },
 
-        getFavivon(_url){
+        getFavicon(_url){
             return GetFaviconLink(_url);
         },
 
@@ -138,7 +138,7 @@ export default {
 
             <div v-else-if="this.curPanel == 'Passwords'" v-for="pw in this.filteredPws" class="listElement" @mouseover="pw.isHovering = true" @mouseout="pw.isHovering = false">
 
-                <img :src="getFavivon(pw.web)">
+                <img :src="getFavicon(pw.web)">
                 <div class="textTitle" @click="LaunchElement(pw)">
                     <p>{{pw.web}}</p>
                     <p><small>{{pw.name}}</small></p>
@@ -200,6 +200,7 @@ export default {
         overflow: scroll;
         -ms-overflow-style: none;  /* IE and Edge */
         scrollbar-width: none;  /* Firefox */
+        
     }
 
     #listContainer::-webkit-scrollbar {
@@ -212,8 +213,8 @@ export default {
         display: flex;
         height: 50px;
         width: 100%;
-        border: 1px solid;
-        border-style: solid none;
+        margin: 2px 0 2px 0;
+        background-color: rgba(0, 0, 0, 0.11);
         position: relative;
     }
 

@@ -196,7 +196,7 @@ export default {
           }
 
           if(_temp.username == undefined) _temp.username = "";
-          if(_temp.folder == undefined) _temp.folder = "none";
+          if(_temp.folder == undefined || _temp.folder == "") _temp.folder = "none";
 
           if(_temp.timeCreated == undefined) _temp.timeCreated = new Date().getTime();
           if(_temp.timeLastUsed == undefined) _temp.timeLastUsed = new Date().getTime();
@@ -258,7 +258,7 @@ export default {
   </div>
 
   <div id="globalContainer" v-if="window === 'main'" class="mainContainer" >
-    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" @passClick="(mode) => DrawerClickElement(mode)" @searchText="(text) => listSearchText = text" @folderSelect="(_folder) => selectedFolder = _folder"  :curPanel=drawerPanel :folders="folders"></drawer>
+    <drawer @currentPanel="(_curPanel) => drawerPanel = _curPanel" @passClick="(mode) => DrawerClickElement(mode)" @searchText="(text) => listSearchText = text" @folderSelect="(_folder) => selectedFolder = _folder"  :curPanel=drawerPanel :folders=folders></drawer>
     <mainlist @handlerObj="(_handlerObj) => this.HandleHandlerObj(_handlerObj)" :curPanel=drawerPanel :pwList=folderFilteredPws :noteList=noteList :contactList=contactList :searchText=listSearchText></mainlist>
   </div>
 
@@ -279,7 +279,7 @@ export default {
   </div>
 
   <div id="settingsContainer" v-if="window === 'settings'" class="mainContainer">
-    <Settings @handler="(_obj) => changeSettings(_obj)" @listHandler="(_obj) => handleSettingsList(_obj)" :givenSelectedType="GlobalsortingType"></Settings>
+    <Settings @handler="(_obj) => changeSettings(_obj)" @listHandler="(_obj) => handleSettingsList(_obj)" :givenSelectedType=GlobalsortingType></Settings>
   </div>
 
   <div style=" position: absolute; bottom: 0px; left: 10px;" class="unselectable">

@@ -66,7 +66,7 @@ function loadAll(){
 function LoadPw(_key){
     var _temp = JSON.parse(localStorage.getItem("list1"));
     if(_temp == null) return [];
-    _arr = [];
+    var _arr = [];
     _temp.forEach(e =>{
         var _obj = {
             name: DecryptMsg (e.a, _key),
@@ -88,7 +88,7 @@ function LoadPw(_key){
 function LoadNotes(_key){
     var _temp = JSON.parse(localStorage.getItem("list2"));
     if(_temp == null) return [];
-    _arr = [];
+    var _arr = [];
     _temp.forEach(e =>{
         var _obj = {
             name: DecryptMsg (e.a, _key),
@@ -105,7 +105,7 @@ function LoadNotes(_key){
 function LoadContacts(_key){
     var _temp = JSON.parse(localStorage.getItem("list3"));
     if(_temp == null) return [];
-    _arr = [];
+    var _arr = [];
     _temp.forEach(e =>{
         var _obj = {
             name: DecryptMsg (e.a, _key),
