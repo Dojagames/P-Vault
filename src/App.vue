@@ -106,7 +106,9 @@ export default {
     }
   },
   mount: {
-
+    //fix add after search and filter active
+    //last used filter fix
+    //
   },
   methods: {
     HandleHandlerObj(e){

@@ -175,4 +175,7 @@ export default {
         right: 20px;
         color: hsl(0, 93%, 57%);
     }
+    #cancelBtn:hover{
+        cursor: pointer;
+    }
 </style>
