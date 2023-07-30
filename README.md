@@ -1,29 +1,17 @@
-# Vue-PwManager
+# P-Vault
 
-This template should help get you started developing with Vue 3 in Vite.
+a simple and local password manager
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- encrypted storage for your passwords, notes and contacts
+- easy password import with csv files
+- password generator
 
-## Customize configuration
+## coded with folloing dependencies
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+-Vue.Js v3
+-CryptoJS
 
-## Project Setup
 
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+## release coming soon
