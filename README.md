@@ -10,8 +10,8 @@ a simple and local password manager
 
 ## coded with folloing dependencies
 
--Vue.Js v3
--CryptoJS
+- Vue.Js v3
+- CryptoJS
 
 
 ## release coming soon
